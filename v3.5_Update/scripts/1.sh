@@ -16,7 +16,7 @@ Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
 Install isl-0.14 bz2
-Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-bootstrap --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared
+Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared
 Install ncurses-5.6 gz
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
 Install mpfr-4.1.0 bz2 --enable-shared
@@ -41,9 +41,12 @@ Install autoconf-2.69 xz
 Install bison-3.5.4 xz 
 Install gawk-4.2.1 xz
 Install sed-4.4 xz
-Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 Install gdb-7.12 xz
 Install binutils-2.34 xz
+export CFLAGS="-O2 -g -fno-common"
+Install glibc-2.23 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-FEATURE=yes --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+unset CFLAGS
+Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 rm -rf /opt/Cross64
 mkdir /opt/Cross64
 InstallCross64 binutils-2.34 xz
@@ -54,30 +57,18 @@ cd W0RK
 make all-gcc -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install-gcc
 CleanUp gcc-6.5.0
-Extract glibc-2.23 xz
-export addons=$(find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ',' -)
-mkdir W0RK
-cd W0RK
-export CFLAGS="-O2 -g -fno-common"
-../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-FEATURE=yes --enable-add-ons=$addons --enable-threads=posix --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
-unset addons
-make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
-make install
-unset CFLAGS
-CleanUp glibc-2.23
 cd /usr/src/kernels/2.6.38.8-24.rs3.0.i686
 make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu/include
 cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
 Extract glibc-2.23 xz
-export addons=$(find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ',' -)
 mkdir W0RK
 cd W0RK
 export CFLAGS="-O2 -g -fno-common"
-../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-FEATURE=yes --enable-add-ons=$addons --enable-threads=posix --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
-unset addons
+../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-FEATURE=yes --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
 make install-headers
 unset CFLAGS
 CleanUp glibc-2.23
+InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-native-system-header-dir=/usr/include --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared
 
 bash
 KernelInstall 3.19.8 gz
