@@ -8,7 +8,7 @@ rm -rf /workspace
 mkdir /workspace
 cd /workspace
 trap 'yumerror' ERR
-yum groupinstall "C/C++ Development Environment" "Develop Editors" "Development Tools" "Development Libraries" -y --skip-broken
+yum install @"Development Tools" "kernel*" -y
 trap 'error' ERR
 Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
