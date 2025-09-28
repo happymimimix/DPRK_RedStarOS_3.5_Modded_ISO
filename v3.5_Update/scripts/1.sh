@@ -16,6 +16,7 @@ Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
 Install isl-0.14 bz2
+Install zlib-1.2.11 xz
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared
 Install ncurses-5.6 gz
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
