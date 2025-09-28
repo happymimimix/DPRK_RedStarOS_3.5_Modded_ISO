@@ -45,7 +45,18 @@ Install sed-4.4 xz
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 Install gdb-7.12 xz
 Install binutils-2.34 xz
+rm -rf /opt/Cross64
+mkdir /opt/Cross64
 InstallCross64 binutils-2.34 xz
+cd /workspace
+Extract gcc-6.5.0 xz
+mkdir W0RK
+cd W0RK
+../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c --enable-shared --enable-multilib --enable-host-shared
+make all-gcc -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
+make install-gcc
+cd /workspace
+CleanUp gcc-6.5.0
 bash
 KernelInstall 3.19.8 gz
 echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'

@@ -11,6 +11,7 @@ builderror() {
 set +x
 rm -f '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 kdialog --title "Failed To Install v3.5 Update Combo" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
+return 1
 }
 yumerror() {
 set +x
@@ -31,7 +32,7 @@ make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install
 cd /workspace
 CleanUp $og1
-return
+return 0
 }
 InstallCross64() {
 set -x
@@ -48,7 +49,7 @@ make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install
 cd /workspace
 CleanUp $og1
-return
+return 0
 }
 Extract() {
 set -x
@@ -56,7 +57,7 @@ trap 'builderror' ERR
 set +e
 tar xvf /root/Desktop/v3.5\ Update\ Combo/packages/$1.tar.$2
 cd $1
-return
+return 0
 }
 CleanUp() {
 set -x
@@ -64,7 +65,7 @@ trap 'builderror' ERR
 set +e
 cd /workspace
 rm -rf $1
-return
+return 0
 }
 KernelInstall() {
 set -x
@@ -79,5 +80,5 @@ make install || true
 make headers_install INSTALL_HDR_PATH=/usr
 sed -i 's/^default=[0-9]\+/default=0/' '/boot/grub/grub.conf'
 cd /workspace
-return
+return 0
 }
