@@ -3,8 +3,6 @@ set -x
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
 trap 'error' ERR
 set +e
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig
-export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/:/lib
 cd /workspace
 Install glibc-2.25 xz --enable-add-ons --with-headers=/usr/include
 Install coreutils-8.32 xz
