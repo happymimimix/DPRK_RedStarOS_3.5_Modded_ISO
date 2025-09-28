@@ -25,7 +25,6 @@ Install isl-0.24 bz2
 Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
 Install libunistring-1.1 gz
-cd /workspace
 Extract openssl-1.0.2u gz
 ./config --openssldir=/usr/ssl
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
@@ -48,15 +47,38 @@ Install binutils-2.34 xz
 rm -rf /opt/Cross64
 mkdir /opt/Cross64
 InstallCross64 binutils-2.34 xz
-cd /workspace
 Extract gcc-6.5.0 xz
 mkdir W0RK
 cd W0RK
 ../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c --enable-shared --enable-multilib --enable-host-shared
 make all-gcc -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install-gcc
-cd /workspace
 CleanUp gcc-6.5.0
+Extract glibc-2.23 xz
+export addons=$(find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ',' -)
+mkdir W0RK
+cd W0RK
+export CFLAGS="-O2 -g -fno-common"
+../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-FEATURE=yes --enable-add-ons=$addons --enable-threads=posix --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+unset addons
+make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
+make install
+unset CFLAGS
+CleanUp glibc-2.23
+cd /usr/src/kernels/2.6.38.8-24.rs3.0.i686
+make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu/include
+cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
+Extract glibc-2.23 xz
+export addons=$(find . -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ',' -)
+mkdir W0RK
+cd W0RK
+export CFLAGS="-O2 -g -fno-common"
+../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-FEATURE=yes --enable-add-ons=$addons --enable-threads=posix --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+unset addons
+make install-headers
+unset CFLAGS
+CleanUp glibc-2.23
+
 bash
 KernelInstall 3.19.8 gz
 echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'

@@ -21,7 +21,6 @@ Install() {
 set -x
 trap 'builderror' ERR
 set +e
-cd /workspace
 Extract $1 $2
 mkdir W0RK
 cd W0RK
@@ -30,7 +29,6 @@ shift 2
 ../configure --prefix=/usr $@
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install
-cd /workspace
 CleanUp $og1
 return 0
 }
@@ -38,7 +36,6 @@ InstallCross64() {
 set -x
 trap 'builderror' ERR
 set +e
-cd /workspace
 Extract $1 $2
 mkdir W0RK
 cd W0RK
@@ -47,7 +44,6 @@ shift 2
 ../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 $@
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 make install
-cd /workspace
 CleanUp $og1
 return 0
 }
@@ -55,6 +51,7 @@ Extract() {
 set -x
 trap 'builderror' ERR
 set +e
+cd /workspace
 tar xvf /root/Desktop/v3.5\ Update\ Combo/packages/$1.tar.$2
 cd $1
 return 0
