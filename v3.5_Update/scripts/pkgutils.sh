@@ -150,6 +150,17 @@ make uninstall || return 1
 CleanUp $og1 || return 1
 return 0
 }
+Check() {
+set -x
+set +e
+title Checking $1
+Extract $1 $2 || return 1
+local og1=$1 || return 1
+shift 2 || return 1
+./configure $@ --help || return 1
+CleanUp $og1 || return 1
+return 0
+}
 Extract() {
 set -x
 set +e
@@ -177,9 +188,11 @@ title Installing Kernel $1 \[Configuring\]
 make allyesconfig || return 1
 title Installing Kernel $1 \[Compiling\]
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l) || return 1
-title Installing Kernel $1 \[Deploying\]
+title Installing Kernel $1 \[Deploying Modules\]
 make modules_install || return 1
+title Installing Kernel $1 \[Deploying RamFS \& vmlinuz\]
 make install || true || return 1
+title Installing Kernel $1 \[Deploying Headers\]
 make headers_install INSTALL_HDR_PATH=/usr || return 1
 sed -i 's/^default=[0-9]\+/default=0/' '/boot/grub/grub.conf' || return 1
 title Cleaning Kernel $1

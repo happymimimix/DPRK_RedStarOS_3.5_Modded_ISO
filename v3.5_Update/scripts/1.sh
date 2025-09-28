@@ -20,7 +20,7 @@ InstallJ1 isl-0.14 bz2
 InstallJ1 zlib-1.2.11 xz
 InstallRootJ1 zlib-1.2.11 xz
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
-Install ncurses-5.6 gz
+Install ncurses-6.0 gz --with-ada
 InstallJ1 gmp-6.2.1 bz2 --enable-cxx --enable-shared
 InstallJ1 mpfr-4.1.0 bz2 --enable-shared
 InstallJ1 mpc-1.2.1 gz --enable-shared
@@ -28,12 +28,19 @@ InstallJ1 isl-0.24 bz2
 Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
 Install libunistring-1.1 gz
+Install libiconv-1.16 gz
+Install cpio-2.13 gz
+title Installing openssl-1.0.2u
 Extract openssl-1.0.2u gz
+title Installing openssl-1.0.2u \[Configuring\]
 ./config --openssldir=/usr/ssl
+title Installing openssl-1.0.2u \[Compiling\]
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
+title Installing openssl-1.0.2u \[Deploying\]
 make install
 CleanUp openssl-1.0.2u
-Install unbound-release-1.8.3 gz
+Install expat-2.2.10 gz
+Install unbound-1.12.0 gz
 Install libffi-3.3 gz
 Install p11-kit-0.23.18.1 gz
 Install gnutls-3.3.30 xz --enable-shared --enable-plugins
@@ -54,24 +61,34 @@ Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 rm -rf /opt/Cross64
 mkdir /opt/Cross64
 InstallCross64 binutils-2.34 xz
+title Installing gcc-6.5.0 For Cross-x86_64
 Extract gcc-6.5.0 xz
 mkdir W0RK
 cd W0RK
+title Installing gcc-6.5.0 For Cross-x86_64 \[Configuring\]
 ../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
+title Installing gcc-6.5.0 For Cross-x86_64 \[Compiling\]
 make all-gcc -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
+title Installing gcc-6.5.0 For Cross-x86_64 \[Deploying\]
 make install-gcc
 CleanUp gcc-6.5.0
+title Installing Kernel 2.6.38.8-24.rs3.0.i686 For Cross-x86_64
 cd /usr/src/kernels/2.6.38.8-24.rs3.0.i686
+title Installing Kernel 2.6.38.8-24.rs3.0.i686 For Cross-x86_64 \[Deploying Headers\]
 make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu/include
 cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
+title Installing gcc-6.5.0 For Cross-x86_64
 Extract glibc-2.23 xz
 mkdir W0RK
 cd W0RK
 export CFLAGS="-O2 -g -fno-common"
+title Installing glibc-2.23 For Cross-x86_64 \[Configuring\]
 ../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+title Installing glibc-2.23 For Cross-x86_64 \[Deploying\]
 make install-headers
 unset CFLAGS
 CleanUp glibc-2.23
+InstallCross64 libiconv-1.16 gz
 InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-native-system-header-dir=/usr/include --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=target --enable-objc-gc --enable-vtable-verify
 
 bash
