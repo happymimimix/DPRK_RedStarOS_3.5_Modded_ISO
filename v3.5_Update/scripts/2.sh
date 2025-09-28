@@ -19,8 +19,7 @@ set +x
 trap '' ERR
 for ((i = 5; i > 0; i--)); do
 echo -ne "Press any key in $i to abort automatic reboot... \r"
-read -rs -n 1 -t 1 key
-if [[ $key ]]; then
+if read -rs -n 1 -t 1; then
 echo -e "\nReboot aborted. "
 sleep 1
 exec bash

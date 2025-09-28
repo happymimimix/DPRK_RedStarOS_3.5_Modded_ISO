@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
-Exec=konsole -e bash -c 'yum install @"Development Tools" "kernel*" -y || kdialog --title "Failed To Install VMware Tools" --error "Failed to install necessary development tools via '\''yum install'\''. \nPlease make sure the Red Star OS 3.5 installation image is inserted into the device and the built-in yum repo on the image can be accessed normally. \nIf you'\''ve already installed all components under the development category and do not need to repeat this process, just ignore this message. \n\nWe apologize for the disruption. \nClick '\''OK'\'' to continue... "; cd /root/Desktop/VMwareTools; tar xvf /root/Desktop/VMwareTools/vmtools.tar.gz; echo -e "\n" | /root/Desktop/VMwareTools/vmware-tools-distrib/vmware-install.pl'
+Exec=konsole -e bash -c 'yum install @"Development Tools" "kernel*" -y -x "*PAE*" || kdialog --title "Failed To Install VMware Tools" --error "Failed to install necessary development tools via '\''yum install'\''. \nPlease make sure the Red Star OS 3.5 installation image is inserted into the device and the built-in yum repo on the image can be accessed normally. \nIf you'\''ve already installed all components under the development category and do not need to repeat this process, just ignore this message. \n\nWe apologize for the disruption. \nClick '\''OK'\'' to continue... "; cd /root/Desktop/VMwareTools; tar xvf /root/Desktop/VMwareTools/vmtools.tar.gz; echo -e "\n" | /root/Desktop/VMwareTools/vmware-tools-distrib/vmware-install.pl; killall -9 -e artsd'
 Terminal=false
 Name=VMwareTools
 Categories=Applocation
