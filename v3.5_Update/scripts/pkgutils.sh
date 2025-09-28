@@ -21,11 +21,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 \[Configuring\]
+title Installing $og1 \[Configuring\]
 ../configure --prefix=/usr $@ || return 1
-title Installing $1 \[Compiling\]
+title Installing $og1 \[Compiling\]
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l) || return 1
-title Installing $1 \[Deploying\]
+title Installing $og1 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -39,11 +39,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 \[Configuring\]
+title Installing $og1 \[Configuring\]
 ../configure --prefix=/usr $@ || return 1
-title Installing $1 \[Compiling\]
+title Installing $og1 \[Compiling\]
 make -j1 || return 1
-title Installing $1 \[Deploying\]
+title Installing $og1 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -57,11 +57,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 \[Configuring\]
+title Installing $og1 \[Configuring\]
 ../configure --prefix= $@ || return 1
-title Installing $1 \[Compiling\]
+title Installing $og1 \[Compiling\]
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l) || return 1
-title Installing $1 \[Deploying\]
+title Installing $og1 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -75,11 +75,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 \[Configuring\]
+title Installing $og1 \[Configuring\]
 ../configure --prefix= $@ || return 1
-title Installing $1 \[Compiling\]
+title Installing $og1 \[Compiling\]
 make -j1 || return 1
-title Installing $1 \[Deploying\]
+title Installing $og1 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -93,11 +93,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 For Cross-x86_64 \[Configuring\]
+title Installing $og1 For Cross-x86_64 \[Configuring\]
 ../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 $@ || return 1
-title Installing $1 For Cross-x86_64 \[Compiling\]
+title Installing $og1 For Cross-x86_64 \[Compiling\]
 make -j$(cat /proc/cpuinfo | grep "processor" | wc -l) || return 1
-title Installing $1 For Cross-x86_64 \[Deploying\]
+title Installing $og1 For Cross-x86_64 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -111,11 +111,11 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Installing $1 For Cross-x86_64 \[Configuring\]
+title Installing $og1 For Cross-x86_64 \[Configuring\]
 ../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 $@ || return 1
-title Installing $1 For Cross-x86_64 \[Compiling\]
+title Installing $og1 For Cross-x86_64 \[Compiling\]
 make -j1 || return 1
-title Installing $1 For Cross-x86_64 \[Deploying\]
+title Installing $og1 For Cross-x86_64 \[Deploying\]
 make install || return 1
 CleanUp $og1 || return 1
 return 0
@@ -129,9 +129,9 @@ mkdir W0RK || return 1
 cd W0RK || return 1
 local og1=$1 || return 1
 shift 2 || return 1
-title Uninstalling $1 \[Configuring\]
+title Uninstalling $og1 \[Configuring\]
 ../configure --prefix=/usr $@ || return 1
-title Uninstalling $1 \[Erasing\]
+title Uninstalling $og1 \[Erasing\]
 make uninstall || return 1
 CleanUp $og1 || return 1
 return 0

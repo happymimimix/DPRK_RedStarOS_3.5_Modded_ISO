@@ -17,6 +17,7 @@ InstallJ1 gmp-4.3.2 bz2 --enable-cxx --enable-shared
 InstallJ1 mpfr-2.4.2 bz2 --enable-shared
 InstallJ1 mpc-0.8.1 gz --enable-shared
 InstallJ1 isl-0.14 bz2
+InstallJ1 zlib-1.2.11 xz
 InstallRootJ1 zlib-1.2.11 xz
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
 Install ncurses-5.6 gz
