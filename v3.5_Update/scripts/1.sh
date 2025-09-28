@@ -1,7 +1,7 @@
 #!/bin/bash
 kdialog --title "Install v3.5 Update Combo" --error "This tool will guide you through the installation process of the unofficial v3.5 update for Red Star OS 3.0. \n\nThis will upgrade the system kernel to 4.19 x86_64 along with updates to many other critical system components and libraries including but not limited to gcc and yum. \n\nThe process is fully automatic, do not touch anything except typing your login password when asked. \nYour device will reboot for a couple of times during the process, it's recommended to set up automatic login in \"System Preferences -> Accounts -> Login Options -> Automatic Login\" so the amount of times the password need to be typed can be reduced. \n\nClick 'OK' when ready... "
-killall -9 -e artsd
 set -x
+killall -9 -e artsd
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
 trap 'error' ERR
 set +e
@@ -40,6 +40,7 @@ Install wget-1.19.5 gz
 Install m4-1.4.18 xz
 Install libtool-2.4.6 xz --enable-shared
 Install autoconf-2.69 xz
+Install automake-1.15 xz
 Install bison-3.5.4 xz 
 Install gawk-4.2.1 xz
 Install sed-4.4 xz
@@ -89,6 +90,7 @@ if read -rs -n 1 -t 1; then
 echo -e "\nReboot aborted. "
 sleep 1
 exec bash -i
+exit
 fi
 done
 echo -e "\nRebooting now... "

@@ -1,0 +1,11 @@
+171c171
+<         mi.pattern(tag, rpm.RPMMIRE_GLOB, name)
+---
+>         mi.pattern(tag, rpm.RPMMIRE_GLOB, name.encode('us-ascii'))
+194c194
+<         mi = ts.dbMatch('basenames', name)
+---
+>         mi = ts.dbMatch('basenames', name.encode('us-ascii'))
+439a440,441
+>             if type(name) == type(u''):
+>                 name = name.encode('utf8')

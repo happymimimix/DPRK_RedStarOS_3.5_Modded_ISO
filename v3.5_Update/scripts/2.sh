@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+killall -9 -e artsd
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
 trap 'error' ERR
 set +e
@@ -7,6 +8,7 @@ cd /workspace
 Install glibc-2.25 xz --enable-add-ons --with-headers=/usr/include
 Install coreutils-8.32 xz
 Install binutils-2.34 xz --enable-gold --enable-plugins --enable-multilib
+Install gnutls-8.32 xz
 Install gdb-8.3 xz
 echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 echo "Encoding=UTF-8" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
@@ -22,7 +24,8 @@ echo -ne "Press any key in $i to abort automatic reboot... \r"
 if read -rs -n 1 -t 1; then
 echo -e "\nReboot aborted. "
 sleep 1
-exec bash
+exec bash -i
+exit
 fi
 done
 echo -e "\nRebooting now... "
