@@ -58,20 +58,6 @@ export CFLAGS="-O2 -g -fno-common"
 Install glibc-2.23 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
 unset CFLAGS
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
-InstallJ1 bc-1.07.1 gz --enable-shared
-Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
-InstallJ1 gmp-4.3.2 bz2 --enable-cxx --enable-shared
-InstallJ1 mpfr-2.4.2 bz2 --enable-shared
-InstallJ1 mpc-0.8.1 gz --enable-shared
-InstallJ1 isl-0.14 bz2
-InstallJ1 zlib-1.2.11 xz
-InstallRootJ1 zlib-1.2.11 xz
-Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
-Install ncurses-6.0 gz --with-ada
-Install autoconf-2.69 xz
-Install automake-1.15 xz
-Install gdb-7.12 xz
-Install binutils-2.34 xz
 rm -rf /opt/Cross64
 mkdir /opt/Cross64
 InstallCross64 binutils-2.34 xz
