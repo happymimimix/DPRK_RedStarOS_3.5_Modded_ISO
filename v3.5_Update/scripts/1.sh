@@ -66,7 +66,7 @@ Extract gcc-6.5.0 xz
 mkdir W0RK
 cd W0RK
 title Installing gcc-6.5.0 For Cross-x86_64 \[Configuring\]
-../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
+../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --enable-bootstrap --enable-threads=posix --enable-checking=release --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c --enable-shared --enable-multilib --enable-host-shared
 title Installing gcc-6.5.0 For Cross-x86_64 \[Compiling\]
 make all-gcc -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
 title Installing gcc-6.5.0 For Cross-x86_64 \[Deploying\]
@@ -77,20 +77,97 @@ cd /usr/src/kernels/2.6.38.8-24.rs3.0.i686
 title Installing Kernel 2.6.38.8-24.rs3.0.i686 For Cross-x86_64 \[Deploying Headers\]
 make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu/include
 cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
-title Installing gcc-6.5.0 For Cross-x86_64
+export CROSS_PREFIX=/opt/Cross64
+export TARGET=x86_64-linux-gnu
+export CC=${CROSS_PREFIX}/bin/${TARGET}-gcc
+export GCC=${CROSS_PREFIX}/bin/${TARGET}-gcc
+#export CXX=${CROSS_PREFIX}/bin/${TARGET}-g++	#We don't have C++ yet
+#export GXX=${CROSS_PREFIX}/bin/${TARGET}-g++	#We don't have C++ yet
+export CPP=${CROSS_PREFIX}/bin/${TARGET}-cpp
+export CXXFILT=${CROSS_PREFIX}/bin/${TARGET}-c++filt
+export AR=${CROSS_PREFIX}/bin/${TARGET}-ar
+export AS=${CROSS_PREFIX}/bin/${TARGET}-as
+export LD=${CROSS_PREFIX}/bin/${TARGET}-ld
+export NM=${CROSS_PREFIX}/bin/${TARGET}-nm
+export RANLIB=${CROSS_PREFIX}/bin/${TARGET}-ranlib
+export STRIP=${CROSS_PREFIX}/bin/${TARGET}-strip
+export STRINGS=${CROSS_PREFIX}/bin/${TARGET}-strings
+export SIZE=${CROSS_PREFIX}/bin/${TARGET}-size
+export OBJCOPY=${CROSS_PREFIX}/bin/${TARGET}-objcopy
+export OBJDUMP=${CROSS_PREFIX}/bin/${TARGET}-objdump
+export READELF=${CROSS_PREFIX}/bin/${TARGET}-readelf
+export ELFEDIT=${CROSS_PREFIX}/bin/${TARGET}-elfedit
+#export DLLTOOL=${CROSS_PREFIX}/bin/${TARGET}-dlltool	#We don't have this tool yet
+export GCOV=${CROSS_PREFIX}/bin/${TARGET}-gcov
+export GCOV_DUMP=${CROSS_PREFIX}/bin/${TARGET}-gcov-dump
+export GCOV_TOOL=${CROSS_PREFIX}/bin/${TARGET}-gcov-tool
+export GPROF=${CROSS_PREFIX}/bin/${TARGET}-gprof
+export ADDR2LINE=${CROSS_PREFIX}/bin/${TARGET}-addr2line
+$CC --help
+$GCC --help
+#$CXX --help	#We don't have C++ yet
+#$GXX --help	#We don't have C++ yet
+$CPP --help
+$CXXFILT --help
+$AR --help
+$AS --help
+$LD --help
+$NM --help
+$RANLIB --help
+$STRIP --help
+$STRINGS --help
+$SIZE --help
+$OBJCOPY --help
+$OBJDUMP --help
+$READELF --help
+$ELFEDIT --help
+#$DLLTOOL --help	#We don't have this tool yet
+$GCOV --help
+$GCOV_DUMP --help
+$GCOV_TOOL --help
+$GPROF --help
+$ADDR2LINE --help
+title Installing glibc-2.23 For Cross-x86_64
 Extract glibc-2.23 xz
 mkdir W0RK
 cd W0RK
 export CFLAGS="-O2 -g -fno-common"
 title Installing glibc-2.23 For Cross-x86_64 \[Configuring\]
 ../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
-title Installing glibc-2.23 For Cross-x86_64 \[Deploying\]
+title Installing glibc-2.23 For Cross-x86_64 \[Deploying Headers\]
 make install-headers
 unset CFLAGS
 CleanUp glibc-2.23
 InstallCross64 libiconv-1.16 gz
-InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-native-system-header-dir=/include --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=target --enable-objc-gc --enable-vtable-verify
-
+InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include --enable-threads=posix --enable-checking=release --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=c,c++ --enable-shared --enable-multilib --enable-host-shared
+InstallCross64 glibc-2.23 xz --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include --enable-threads=posix --enable-checking=release --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ --enable-shared --enable-multilib --enable-host-shared --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
+unset CROSS_PREFIX
+unset TARGET
+unset CC
+unset GCC
+unset CXX
+unset GXX
+unset CPP
+unset CXXFILT
+unset AR
+unset AS
+unset LD
+unset NM
+unset RANLIB
+unset STRIP
+unset STRINGS
+unset SIZE
+unset OBJCOPY
+unset OBJDUMP
+unset READELF
+unset ELFEDIT
+unset DLLTOOL
+unset GCOV
+unset GCOV_DUMP
+unset GCOV_TOOL
+unset GPROF
+unset ADDR2LINE
 bash
 KernelInstall 3.19.8 gz
 echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'

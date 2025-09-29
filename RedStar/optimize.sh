@@ -47,9 +47,12 @@ echo -ne "Press any key in $i to abort automatic reboot... \r"
 if read -rs -n 1 -t 1; then
 echo -e "\nReboot aborted. "
 sleep 1
-exec bash -i
+kdialog --title "Basic Optimization Completed! " --error "We've just completed some basic optimizations to RedStar OS 3.0 and it's now ready to be used by a foreigner outside DPRK. \nYou can install the v3.5 Update Combo on your desktop for even further optimizations. \nBesides, we've also prepared an old VMware Tools installer that is compatible with RedStar OS on your desktop that you can use to get a better experience in a VM. \n\nHave fun playing around!     : )\nMade By: happy_mimimix"
+rm -f '/root/Desktop/Redstar Optimize.sh' && exec bash -i
 exit
 fi
 done
 echo -e "\nRebooting now... "
 sleep 1
+kdialog --title "Basic Optimization Completed! " --error "We've just completed some basic optimizations to RedStar OS 3.0 and it's now ready to be used by a foreigner outside DPRK. \nYou can install the v3.5 Update Combo on your desktop for even further optimizations. \nBesides, we've also prepared an old VMware Tools installer that is compatible with RedStar OS on your desktop that you can use to get a better experience in a VM. \n\nHave fun playing around!     : )\nMade By: happy_mimimix"
+rm -f '/root/Desktop/Redstar Optimize.sh' && reboot
