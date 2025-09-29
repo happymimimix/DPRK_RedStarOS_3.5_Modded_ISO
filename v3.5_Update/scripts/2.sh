@@ -19,14 +19,11 @@ echo -ne "Press any key in $i to abort automatic reboot... \r"
 if read -rs -n 1 -t 1; then
 echo -e "\nReboot aborted. "
 sleep 1
-if [ ! -f ~/.bashrc.bak ]; then
-cp -f ~/.bashrc ~/.bashrc.bak
-echo 'set -x' >> ~/.bashrc
-echo 'set +e' >> ~/.bashrc
-echo 'source pkgtool' >> ~/.bashrc
-fi
-sleep 1 && cp -f ~/.bashrc.bak ~/.bashrc && rm -f ~/.bashrc.bak &
-exec bash -i
+cp -f ~/.bashrc /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'set -x' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'set +e' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'source pkgtool' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+exec bash --rcfile /root/Desktop/v3.5\ Update\ Combo/scripts/trap -i
 exit
 fi
 done

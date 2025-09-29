@@ -6,14 +6,11 @@ scripterror() {
 rm -f '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 kdialog --title "Failed To Install v3.5 Update Combo" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
 trap '' ERR
-if [ ! -f ~/.bashrc.bak ]; then
-cp -f ~/.bashrc ~/.bashrc.bak
-echo 'set -x' >> ~/.bashrc
-echo 'set +e' >> ~/.bashrc
-echo 'source pkgtool' >> ~/.bashrc
-fi
-sleep 1 && cp -f ~/.bashrc.bak ~/.bashrc && rm -f ~/.bashrc.bak &
-exec bash -i
+cp -f ~/.bashrc /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'set -x' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'set +e' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+echo 'source pkgtool' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
+exec bash --rcfile /root/Desktop/v3.5\ Update\ Combo/scripts/trap -i
 exit
 }
 yumerror() {
@@ -23,6 +20,7 @@ trap 'error' ERR
 set +e
 export PATH=/opt/Cross64/bin:$PATH
 title() { printf '\033]0;%s\007' "$*" || return 1; }
+nop() { return 0; }
 Extract() {
 set -x
 set +e
@@ -83,8 +81,9 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local Thread="${3}" || return 1
-shift 3 || return 1
-local TitleText="Installing ${Package}" || return 1
+local TitlePostfix="${4}" || return 1
+shift 4 || return 1
+local TitleText="Installing ${Package} ${TitlePostfix}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand="make -j${Thread}" || return 1
@@ -97,31 +96,14 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local TitleText="Installing ${Package}" || return 1
-local Subfolder="${3}" || return 1
-local ConfigureCommand="${4}" || return 1
-local MakeCommand="${5}" || return 1
-local DeployCommand="${6}" || return 1
-shift 6 || return 1
+local TitlePostfix="${3}" || return 1
+local TitleText="Installing ${Package} ${TitlePostfix}" || return 1
+local Subfolder="${4}" || return 1
+local ConfigureCommand="${5}" || return 1
+local MakeCommand="${6}" || return 1
+local DeployCommand="${7}" || return 1
+shift 7 || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
-return 0
-}
-InstallDefault() {
-set -x
-set +e
-local Package="${1}" || return 1
-local Format="${2}" || return 1
-shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "${@}"
-return 0
-}
-InstallDefaultJ1() {
-set -x
-set +e
-local Package="${1}" || return 1
-local Format="${2}" || return 1
-shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "${@}"
 return 0
 }
 Install() {
@@ -130,7 +112,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "--prefix=/usr" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=/usr" "${@}"
 return 0
 }
 InstallJ1() {
@@ -139,7 +121,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "--prefix=/usr" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=/usr" "${@}"
 return 0
 }
 InstallRoot() {
@@ -148,7 +130,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "--prefix=" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=" "${@}"
 return 0
 }
 InstallRootJ1() {
@@ -157,7 +139,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "--prefix=" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=" "${@}"
 return 0
 }
 InstallCross64() {
@@ -166,7 +148,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
 return 0
 }
 InstallCross64J1() {
@@ -175,7 +157,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
 return 0
 }
 Native64EnvSetup() {
@@ -267,7 +249,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
 Native64EnvCleanUp
 return 0
 }
@@ -278,7 +260,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup
-InstallEngine "${Package}" "${Format}" '1' "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
 Native64EnvCleanUp
 return 0
 }
@@ -289,7 +271,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
 Native64EnvCleanUp
 return 0
 }
@@ -300,20 +282,21 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup
-InstallEngine "${Package}" "${Format}" '1' "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
 Native64EnvCleanUp
 return 0
 }
-RemoveDefault() {
+RemoveEngine() {
 set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-shift 2 || return 1
-local TitleText="Removing ${Package}" || return 1
+local TitlePostfix="${3}" || return 1
+shift 3 || return 1
+local TitleText="Removing ${Package} ${TitlePostfix}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
-local MakeCommand="echo 'Nothing to do. '" || return 1
+local MakeCommand="nop" || return 1
 local DeployCommand="make uninstall" || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Erasing' 'Cleaning'
 return 0
@@ -324,7 +307,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveDefault "${Package}" "${Format}" "--prefix=/usr" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Host"  "--prefix=/usr" "${@}"
 return 0
 }
 RemoveRoot() {
@@ -333,7 +316,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveDefault "${Package}" "${Format}" "--prefix=" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Host" "--prefix=" "${@}"
 return 0
 }
 RemoveCross64() {
@@ -342,7 +325,7 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveDefault "${Package}" "${Format}" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
 return 0
 }
 RemoveNative64() {
@@ -352,7 +335,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup
-RemoveDefault "${Package}" "${Format}" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
 Native64EnvCleanUp
 return 0
 }
@@ -365,8 +348,8 @@ shift 2 || return 1
 local TitleText="Checking ${Package}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@} --help" || return 1
-local MakeCommand="echo 'Nothing to do. '" || return 1
-local DeployCommand="echo 'Nothing to do. '" || return 1
+local MakeCommand="nop" || return 1
+local DeployCommand="nop" || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
 return 0
 }
