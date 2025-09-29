@@ -4,12 +4,13 @@ set -x
 killall -9 -e artsd
 ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool'
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
+trap 'scripterror' ERR
 rm -rf /workspace
 mkdir /workspace
 cd /workspace
 trap 'yumerror' ERR
 yum install @"Development Tools" "kernel*" -y -x "*PAE*"
-trap 'error' ERR
+trap 'scripterror' ERR
 InstallJ1 bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
 InstallJ1 gmp-4.3.2 bz2 --enable-cxx --enable-shared
@@ -52,15 +53,15 @@ Install bison-3.5.4 xz
 Install gawk-4.2.1 xz
 Install sed-4.4 xz
 Install gdb-7.12 xz
-Install binutils-2.34 xz --enable-ld=yes --enable-gold=yes --enable-compressed-debug-sections=none --enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
+Install binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none --enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
 export CFLAGS="-O2 -g -fno-common"
-Install glibc-2.23 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
+InstallRoot glibc-2.23 xz --mandir=/usr/share/man --infodir=/usr/share/info --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
 unset CFLAGS
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 rm -rf /opt/Cross64
 mkdir /opt/Cross64
 export PATH=/opt/Cross64/bin:$PATH
-InstallCross64 binutils-2.34 xz --disable-multilib
+InstallCross64 binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none --enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
 title Installing gcc-6.5.0 For Cross-x86_64
 Extract gcc-6.5.0 xz
 mkdir W0RK
