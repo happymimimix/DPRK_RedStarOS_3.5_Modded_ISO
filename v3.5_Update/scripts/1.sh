@@ -5,6 +5,7 @@ killall -9 -e artsd
 ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool'
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
 trap 'scripterror' ERR
+set +e
 rm -rf /workspace
 mkdir /workspace
 cd /workspace
@@ -55,17 +56,14 @@ Install sed-4.4 xz
 Install gdb-7.12 xz
 Install binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none \
 --enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
-export CFLAGS="-O2 -g -fno-common"
-bash
-#InstallRoot glibc-2.23 xz --mandir=/usr/share/man --infodir=/usr/share/info \
-#--enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
-unset CFLAGS
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 rm -rf /opt/Cross64
+rm -f /workspace/Cross64
 mkdir /opt/Cross64
+ln -sd /opt/Cross64 /workspace/Cross64
 InstallCross64 binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none \
 --enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
-CustomInstall gcc-6.5.0 xz "For Cross-x86_64" "W0RK" \
+CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
 "../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers \
 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --enable-threads=posix --enable-checking=release --enable-bootstrap \
@@ -79,24 +77,55 @@ cd /usr/src/kernels/2.6.38.8-24.rs3.0.i686
 title Installing Kernel 2.6.38.8-24.rs3.0.i686 For Cross-x86_64 \[Deploying Headers\]
 make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu/include
 cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
-export CFLAGS="-O2 -g -fno-common"
-CustomInstall glibc-2.23 xz "For Cross-x86_64" "W0RK" \
-"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info \
+CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
+"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
---enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror" \
+--enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror libc_cv_forced_unwind=yes" \
 "nop" \
-"make install-headers"
-unset CFLAGS
-InstallCross64 libiconv-1.16 gz
-InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info \
+"make install-headers install-bootstrap-headers=yes"
+CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 2)" "W0RK" \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
+--mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include \
+--enable-threads=posix --enable-checking=release \
+--enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
+--enable-languages=c,c++,objc,obj-c++ \
+--enable-shared --disable-multilib --enable-host-shared \
+--enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
+"make all-gcc -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-gcc"
+CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 2)" "W0RK" \
+"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
+--enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror libc_cv_forced_unwind=yes" \
+"make csu/subdir_lib -j$(grep -c ^processor /proc/cpuinfo)" \
+"install csu/crt1.o csu/crti.o csu/crtn.o /opt/Cross64/x86_64-linux-gnu/lib"
+/opt/Cross64/bin/x86_64-linux-gnu-gcc -m64 -nostdlib -nostartfiles -shared -x c /dev/null -o /opt/Cross64/x86_64-linux-gnu/lib/libc.so
+cp -fv /opt/Cross64/x86_64-linux-gnu/include/gnu/stubs-32.h /opt/Cross64/x86_64-linux-gnu/include/gnu/stubs-64.h
+CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
+--mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include \
+--enable-threads=posix --enable-checking=release \
+--enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
+--enable-languages=c,c++,objc,obj-c++ \
+--enable-shared --disable-multilib --enable-host-shared \
+--enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
+"make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target-libgcc"
+CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
+"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
+--enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
+"make -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install"
+InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
---enable-shared --enable-multilib --enable-host-shared \
+--enable-shared --disable-multilib --enable-host-shared \
 --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
-InstallCross64 glibc-2.23 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cross64/share/info \
---enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
 bash
 KernelInstall 3.19.8 gz
 EnterStage 2

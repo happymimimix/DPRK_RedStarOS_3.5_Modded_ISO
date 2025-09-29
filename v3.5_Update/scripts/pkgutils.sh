@@ -19,10 +19,16 @@ kdialog --title "Failed To Install v3.5 Update Combo" --error "Failed to install
 trap 'error' ERR
 set +e
 export PATH=/opt/Cross64/bin:$PATH
-title() { printf '\033]0;%s\007' "$*" || return 1; }
+title() {
+set -x
+trap 'error' ERR
+set +e
+printf '\033]0;%s\007' "$*" || return 1
+}
 nop() { return 0; }
 Extract() {
 set -x
+trap 'error' ERR
 set +e
 if [[ -n "${3}" ]]; then
 title "${3}" || return 1
@@ -36,6 +42,7 @@ return 0
 }
 CleanUp() {
 set -x
+trap 'error' ERR
 set +e
 if [[ -n "${2}" ]]; then
 title "${2}"
@@ -48,6 +55,7 @@ return 0
 }
 InstallBase() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -77,6 +85,7 @@ return 0
 }
 InstallEngine() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -93,6 +102,7 @@ return 0
 }
 CustomInstall() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -108,6 +118,7 @@ return 0
 }
 Install() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -117,6 +128,7 @@ return 0
 }
 InstallJ1() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -126,6 +138,7 @@ return 0
 }
 InstallRoot() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -135,6 +148,7 @@ return 0
 }
 InstallRootJ1() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -144,6 +158,7 @@ return 0
 }
 InstallCross64() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -153,6 +168,7 @@ return 0
 }
 InstallCross64J1() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -160,7 +176,30 @@ shift 2 || return 1
 InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
 return 0
 }
+InstallCross64Root() {
+set -x
+trap 'error' ERR
+set +e
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}"
+return 0
+}
+InstallCross64RootJ1() {
+set -x
+trap 'error' ERR
+set +e
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}"
+return 0
+}
 Native64EnvSetup() {
+set -x
+trap 'error' ERR
+set +e
 export CROSS_PREFIX=/opt/Cross64 || return 1
 export TARGET=x86_64-linux-gnu || return 1
 export CC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
@@ -214,6 +253,9 @@ $ADDR2LINE --help || return 1
 return 0
 }
 Native64EnvCleanUp() {
+set -x
+trap 'error' ERR
+set +e
 unset CROSS_PREFIX || return 1
 unset TARGET || return 1
 unset CC || return 1
@@ -244,6 +286,7 @@ return 0
 }
 InstallNative64() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -255,6 +298,7 @@ return 0
 }
 InstallNative64J1() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -266,6 +310,7 @@ return 0
 }
 InstallNative64Root() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -277,6 +322,7 @@ return 0
 }
 InstallNative64RootJ1() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -288,6 +334,7 @@ return 0
 }
 RemoveEngine() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -303,6 +350,7 @@ return 0
 }
 Remove() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -312,6 +360,7 @@ return 0
 }
 RemoveRoot() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -321,6 +370,7 @@ return 0
 }
 RemoveCross64() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -330,6 +380,7 @@ return 0
 }
 RemoveNative64() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -341,6 +392,7 @@ return 0
 }
 Check() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -355,6 +407,7 @@ return 0
 }
 KernelInstall() {
 set -x
+trap 'error' ERR
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
@@ -389,6 +442,9 @@ cd /workspace || return 1
 return 0
 }
 EnterStage() {
+set -x
+trap 'error' ERR
+set +e
 echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 echo "Encoding=UTF-8" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 echo "Type=Application" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
