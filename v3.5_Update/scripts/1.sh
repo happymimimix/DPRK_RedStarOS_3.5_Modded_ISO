@@ -11,13 +11,13 @@ cd /workspace
 trap 'yumerror' ERR
 yum install @"Development Tools" "kernel*" -y -x "*PAE*"
 trap 'scripterror' ERR
-InstallJ1 bc-1.07.1 gz --enable-shared
+Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
-InstallJ1 gmp-4.3.2 bz2 --enable-cxx --enable-shared
-InstallJ1 mpfr-2.4.2 bz2 --enable-shared
-InstallJ1 mpc-0.8.1 gz --enable-shared
-InstallJ1 isl-0.14 bz2
-InstallJ1 zlib-1.2.11 xz
+Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
+Install mpfr-2.4.2 bz2 --enable-shared
+Install mpc-0.8.1 gz --enable-shared
+Install isl-0.14 bz2
+Install zlib-1.2.11 xz
 InstallRootJ1 zlib-1.2.11 xz
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
@@ -26,10 +26,10 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-shared --enable-multilib --enable-host-shared \
 --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify
 Install ncurses-6.0 gz --with-ada
-InstallJ1 gmp-6.2.1 bz2 --enable-cxx --enable-shared
-InstallJ1 mpfr-4.1.0 bz2 --enable-shared
-InstallJ1 mpc-1.2.1 gz --enable-shared
-InstallJ1 isl-0.24 bz2
+Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
+Install mpfr-4.1.0 bz2 --enable-shared
+Install mpc-1.2.1 gz --enable-shared
+Install isl-0.24 bz2
 Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
 Install libunistring-1.1 gz
@@ -99,28 +99,4 @@ InstallCross64 glibc-2.23 xz --mandir=/opt/Cross64/share/man --infodir=/opt/Cros
 --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --disable-werror
 bash
 KernelInstall 3.19.8 gz
-echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Encoding=UTF-8" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Type=Application" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Exec=konsole -e bash -c \"cd /root/Desktop/v3.5\ Update\ Combo;  ./scripts/2.sh\"" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Terminal=false" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Name=v3.5 Update Combo" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Categories=Applocation" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-set +x
-trap '' ERR
-for ((i = 5; i > 0; i--)); do
-echo -ne "Press any key in $i to abort automatic reboot... \r"
-if read -rs -n 1 -t 1; then
-echo -e "\nReboot aborted. "
-sleep 1
-cp -f ~/.bashrc /root/Desktop/v3.5\ Update\ Combo/scripts/trap
-echo 'set -x' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
-echo 'set +e' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
-echo 'source pkgtool' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
-exec bash --rcfile /root/Desktop/v3.5\ Update\ Combo/scripts/trap -i
-exit
-fi
-done
-echo -e "\nRebooting now... "
-sleep 1
-reboot
+EnterStage 2
