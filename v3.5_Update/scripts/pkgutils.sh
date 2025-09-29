@@ -83,13 +83,26 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local Thread="${3}" || return 1
-local og1="${1}" || return 1
 shift 3 || return 1
-local TitleText="Installing ${og1}" || return 1
+local TitleText="Installing ${Package}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand="make -j${Thread}" || return 1
 local DeployCommand="make install" || return 1
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+return 0
+}
+CustomInstall() {
+set -x
+set +e
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+local TitleText="Installing ${Package}" || return 1
+local Subfolder="${3}" || return 1
+local ConfigureCommand="${4}" || return 1
+local MakeCommand="${5}" || return 1
+local DeployCommand="${6}" || return 1
+shift 6 || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
 return 0
 }
@@ -296,9 +309,8 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
-local TitleText="Removing ${og1}" || return 1
+local TitleText="Removing ${Package}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand="echo 'Nothing to do. '" || return 1
@@ -311,17 +323,15 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
 RemoveDefault "${Package}" "${Format}" "--prefix=/usr" "${@}"
 return 0
 }
-Remove() {
+RemoveRoot() {
 set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
 RemoveDefault "${Package}" "${Format}" "--prefix=" "${@}"
 return 0
@@ -331,7 +341,6 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
 RemoveDefault "${Package}" "${Format}" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
 return 0
@@ -341,7 +350,6 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
 Native64EnvSetup
 RemoveDefault "${Package}" "${Format}" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
@@ -353,9 +361,8 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local og1="${1}" || return 1
 shift 2 || return 1
-local TitleText="Checking ${og1}" || return 1
+local TitleText="Checking ${Package}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@} --help" || return 1
 local MakeCommand="echo 'Nothing to do. '" || return 1
@@ -368,7 +375,7 @@ set -x
 set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
-local TitleText="Installing Kernel ${1}" || return 1
+local TitleText="Installing Kernel ${Package}" || return 1
 local ConfigureCommand="make allyesconfig" || return 1
 local MakeCommand="make -j$(grep -c ^processor /proc/cpuinfo)" || return 1
 local DeployCommandA="make modules_install" || return 1

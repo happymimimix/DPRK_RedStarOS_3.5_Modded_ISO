@@ -30,15 +30,7 @@ Install libtasn1-4.10 gz
 Install libunistring-1.1 gz
 Install libiconv-1.16 gz
 Install cpio-2.13 gz
-title Installing openssl-1.0.2u
-Extract openssl-1.0.2u gz
-title Installing openssl-1.0.2u \[Configuring\]
-./config --openssldir=/usr/ssl
-title Installing openssl-1.0.2u \[Compiling\]
-make -j$(cat /proc/cpuinfo | grep "processor" | wc -l)
-title Installing openssl-1.0.2u \[Deploying\]
-make install
-CleanUp openssl-1.0.2u
+CustomInstall openssl-1.0.2u gz "" "./config --openssldir=/usr/ssl" "make -j$(grep -c ^processor /proc/cpuinfo)" "make install"
 Install expat-2.2.10 xz
 Install unbound-1.12.0 gz
 Install libffi-3.3 gz
