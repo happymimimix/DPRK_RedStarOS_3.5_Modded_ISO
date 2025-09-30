@@ -1,4 +1,8 @@
 #!/bin/bash
+MakeShortcut() {
+rm -f '/bin/pkgtool'
+ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool'
+}
 error() {
 kdialog --title "Failed To Install v3.5 Update Combo" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
 }
@@ -45,12 +49,49 @@ set -x
 trap 'error' ERR
 set +e
 if [[ -n "${2}" ]]; then
-title "${2}"
+title "${2}" || return 1
 else
-title "Cleaning ${1}"
+title "Cleaning ${1}" || return 1
 fi
 cd /workspace || return 1
 rm -rf "${1}" || return 1
+return 0
+}
+FullCleanUp() {
+set -x
+trap 'error' ERR
+set +e
+title "Cleaning All Workspaces" || return 1
+rm -rf /workspace || return 1
+rm -rf /opt/Cross64 || return 1
+mkdir /workspace || return 1
+mkdir /opt/Cross64 || return 1
+ln -sd /opt/Cross64 /workspace/Cross64 || return 1
+cd /workspace || return 1
+return 0
+}
+WorkspaceCleanUp() {
+set -x
+trap 'error' ERR
+set +e
+title "Cleaning Workspace" || return 1
+rm -rf /workspace || return 1
+mkdir /workspace || return 1
+mkdir /opt/Cross64 || true
+ln -sd /opt/Cross64 /workspace/Cross64 || return 1
+cd /workspace || return 1
+return 0
+}
+Cross64CleanUp() {
+set -x
+trap 'error' ERR
+set +e
+title "Cleaning Cross64 Workspace" || return 1
+rm -rf /opt/Cross64 || return 1
+rm -f /workspace/Cross64 || return 1
+mkdir /opt/Cross64 || return 1
+ln -sd /opt/Cross64 /workspace/Cross64 || return 1
+cd /opt/Cross64 || return 1
 return 0
 }
 InstallBase() {
@@ -75,11 +116,11 @@ mkdir "${Subfolder}" || return 1
 cd "${Subfolder}" || return 1
 fi
 title "${TitleText} [${TitlePostfixB}]" || return 1
-${ConfigureCommand} || return 1
+eval ${ConfigureCommand} || return 1
 title "${TitleText} [${TitlePostfixC}]" || return 1
-${MakeCommand} || return 1
+eval ${MakeCommand} || return 1
 title "${TitleText} [${TitlePostfixD}]" || return 1
-${DeployCommand}  || return 1
+eval ${DeployCommand}  || return 1
 CleanUp "${Package}" "${TitleText} [${TitlePostfixE}]" || return 1
 return 0
 }
@@ -397,11 +438,26 @@ set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-local TitleText="Checking ${Package}" || return 1
+local TitleText="Checking Configure Options Of ${Package}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@} --help" || return 1
 local MakeCommand="nop" || return 1
 local DeployCommand="nop" || return 1
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+return 0
+}
+CheckMake() {
+set -x
+trap 'error' ERR
+set +e
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+local TitleText="Checking Make Targets Of ${Package}" || return 1
+local Subfolder="W0RK" || return 1
+local ConfigureCommand="../configure ${@}" || return 1
+local MakeCommand='make -pRrsq > TMP 2>&1 || true' || return 1
+local DeployCommand='killall -9 -e simpletext || true; /Applications/SimpleText.app/Contents/RedStar/simpletext TMP; rm -f TMP' || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
 return 0
 }
@@ -428,15 +484,15 @@ cd /usr/src/kernels || return 1
 tar xvf "/root/Desktop/v3.5 Update Combo/packages/${Package}.tar.${Format}" || return 1
 cd "${Package}" || return 1
 title "${TitleText} [${TitlePostfixB}]" || return 1
-${ConfigureCommand} || return 1
+eval ${ConfigureCommand} || return 1
 title "${TitleText} [${TitlePostfixC}]" || return 1
-${MakeCommand} || return 1
+eval ${MakeCommand} || return 1
 title "${TitleText} [${TitlePostfixD}]" || return 1
-${DeployCommandA}  || return 1
+eval ${DeployCommandA}  || return 1
 title "${TitleText} [${TitlePostfixE}]" || return 1
-${DeployCommandB}  || return 1
+eval ${DeployCommandB}  || return 1
 title "${TitleText} [${TitlePostfixF}]" || return 1
-${DeployCommandC}  || return 1
+eval ${DeployCommandC}  || return 1
 sed -i 's/^default=[0-9]\+/default=0/' '/boot/grub/grub.conf' || return 1
 cd /workspace || return 1
 return 0

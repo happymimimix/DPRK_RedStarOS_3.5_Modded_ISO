@@ -4,6 +4,6 @@ killall -9 -e artsd
 source '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh'
 trap 'scripterror' ERR
 set +e
-cd /workspace
+WorkspaceCleanUp
 
 EnterStage 3
