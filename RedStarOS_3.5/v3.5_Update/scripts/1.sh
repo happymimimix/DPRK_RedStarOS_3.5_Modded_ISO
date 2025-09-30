@@ -110,7 +110,7 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
 "make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target-libgcc"
-CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
+CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 "../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include \
@@ -119,9 +119,20 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 --enable-languages=c,c++,objc,obj-c++ \
 --enable-shared --disable-multilib --enable-host-shared \
 --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
-"make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
-"make install-target"
-CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
+"make all-target-libstdc++ -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target-libstdc++"
+CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
+--mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include \
+--enable-threads=posix --enable-checking=release \
+--enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
+--enable-languages=c,c++,objc,obj-c++ \
+--enable-shared --disable-multilib --enable-host-shared \
+--enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
+"make all-target-libssp -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target-libssp"
+CustomInstall glibc-2.23 xz "For Cross-x86_64" "W0RK" \
 "../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
