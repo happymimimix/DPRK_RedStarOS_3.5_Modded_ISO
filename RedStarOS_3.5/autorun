@@ -2,8 +2,9 @@
 if [ "$(id -u)" != 0 ]; then
 kdialog --title "Permission Denied! " --error "This OS optimization script need root privileges to run. "
 [ ! -d '/Applications/SGOffice.app' ] && kdialog --title "Error! " --error "Sogwang Office is required to display the root tutorial! Ignore this if you already know what to do. "
+cp -f /media/RedStarOS_3.5/RootTutorial.rtf ~/RootTutorial.rtf
 rootsetting
-'/Applications/SGOffice.app/Contents/RedStar/soffice' '/media/RedStarOS_3.5/RootTutorial.rtf'
+/Applications/SGOffice.app/Contents/RedStar/soffice ~/RootTutorial.rtf
 fi
 if [ "$(id -u)" == 0 ]; then
 kdialog --title "Root permission grant success! " --error "OS Optimization Process Will Now Begin. "

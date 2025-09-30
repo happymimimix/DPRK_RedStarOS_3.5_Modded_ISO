@@ -121,7 +121,7 @@ shift 4 || return 1
 local TitleText="Installing ${Package} ${TitlePostfix}" || return 1
 local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
-local MakeCommand="make -j${Thread}" || return 1
+local MakeCommand="make all -j${Thread}" || return 1
 local DeployCommand="make install" || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
 return 0
