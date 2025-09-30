@@ -19,17 +19,7 @@ Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
 Install isl-0.14 bz2
 Install zlib-1.2.11 xz
-InstallRootJ1 zlib-1.2.11 xz
-CustomInstall gcc-6.5.0 xz "For Host" "W0RK" \
-"../configure --prefix=/usr \
---mandir=/usr/share/man --infodir=/usr/share/info \
---enable-threads=posix --enable-checking=release --with-system-zlib \
---enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
---enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
---enable-shared --enable-multilib --enable-host-shared \
---enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
-"make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
-"make install-target"
+InstallRoot zlib-1.2.11 xz
 CustomInstall gcc-6.5.0 xz "For Host" "W0RK" \
 "../configure --prefix=/usr \
 --mandir=/usr/share/man --infodir=/usr/share/info \
@@ -40,6 +30,19 @@ CustomInstall gcc-6.5.0 xz "For Host" "W0RK" \
 --enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
+CustomInstall gcc-6.5.0 xz "target libraries For Host" "W0RK" \
+"../configure --prefix=/usr \
+--mandir=/usr/share/man --infodir=/usr/share/info \
+--enable-threads=posix --enable-checking=release --with-system-zlib \
+--enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
+--enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
+--enable-shared --enable-multilib --enable-host-shared \
+--enable-lto --enable-libada --enable-libssp --enable-liboffloadmi=host --enable-objc-gc --enable-vtable-verify" \
+"make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target"
+Install gdb-7.12 xz
+Install binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none \
+--enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
 Install ncurses-6.0 gz --with-ada
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
 Install mpfr-4.1.0 bz2 --enable-shared
@@ -67,9 +70,6 @@ Install automake-1.15 xz
 Install bison-3.5.4 xz 
 Install gawk-4.2.1 xz
 Install sed-4.4 xz
-Install gdb-7.12 xz
-Install binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none \
---enable-host-shared --enable-libada --enable-libssp --enable-liblto --enable-objc-gc --enable-vtable-verify
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 Cross64CleanUp
 InstallCross64 binutils-2.34 xz --enable-ld=yes --enable-gold=no --enable-compressed-debug-sections=none --enable-bootstrap \

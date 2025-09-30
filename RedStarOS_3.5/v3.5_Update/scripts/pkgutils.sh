@@ -1,15 +1,18 @@
 #!/bin/bash
 MakeShortcut() {
-rm -f '/bin/pkgtool'
-ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool'
+set -x
+rm -f '/bin/pkgtool' || return 1
+ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool' || return 1
+return 0
 }
 error() {
-kdialog --title "Failed To Install v3.5 Update Combo" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
+kdialog --title "Operation Cannot Be Completed" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
+return 1
 }
 scripterror() {
 rm -f '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
 kdialog --title "Failed To Install v3.5 Update Combo" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
-trap '' ERR
+set +x
 cp -f ~/.bashrc /root/Desktop/v3.5\ Update\ Combo/scripts/trap
 echo 'set -x' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
 echo 'set +e' >> /root/Desktop/v3.5\ Update\ Combo/scripts/trap
@@ -19,21 +22,15 @@ exit
 }
 yumerror() {
 kdialog --title "Failed To Install v3.5 Update Combo" --error "Failed to install necessary development tools via 'yum install'. \nPlease make sure the Red Star OS 3.5 installation image is inserted into the device and the built-in yum repo on the image can be accessed normally. \nIf you've already installed all components under the development category and do not need to repeat this process, just ignore this message. \n\nWe apologize for the disruption. \nClick 'OK' to continue... "
+return 0
 }
-trap 'error' ERR
-set +e
-export PATH=/opt/Cross64/bin:$PATH
 title() {
 set -x
-trap 'error' ERR
-set +e
 printf '\033]0;%s\007' "$*" || return 1
 }
 nop() { return 0; }
 Extract() {
 set -x
-trap 'error' ERR
-set +e
 if [[ -n "${3}" ]]; then
 title "${3}" || return 1
 else
@@ -46,8 +43,6 @@ return 0
 }
 CleanUp() {
 set -x
-trap 'error' ERR
-set +e
 if [[ -n "${2}" ]]; then
 title "${2}" || return 1
 else
@@ -59,8 +54,6 @@ return 0
 }
 FullCleanUp() {
 set -x
-trap 'error' ERR
-set +e
 title "Cleaning All Workspaces" || return 1
 rm -rf /workspace || return 1
 rm -rf /opt/Cross64 || return 1
@@ -72,8 +65,6 @@ return 0
 }
 WorkspaceCleanUp() {
 set -x
-trap 'error' ERR
-set +e
 title "Cleaning Workspace" || return 1
 rm -rf /workspace || return 1
 mkdir /workspace || return 1
@@ -84,8 +75,6 @@ return 0
 }
 Cross64CleanUp() {
 set -x
-trap 'error' ERR
-set +e
 title "Cleaning Cross64 Workspace" || return 1
 rm -rf /opt/Cross64 || return 1
 rm -f /workspace/Cross64 || return 1
@@ -96,8 +85,6 @@ return 0
 }
 InstallBase() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local TitleText="${3}" || return 1
@@ -126,8 +113,6 @@ return 0
 }
 InstallEngine() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local Thread="${3}" || return 1
@@ -138,13 +123,11 @@ local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand="make -j${Thread}" || return 1
 local DeployCommand="make install" || return 1
-InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
 return 0
 }
 CustomInstall() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local TitlePostfix="${3}" || return 1
@@ -154,93 +137,75 @@ local ConfigureCommand="${5}" || return 1
 local MakeCommand="${6}" || return 1
 local DeployCommand="${7}" || return 1
 shift 7 || return 1
-InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
 return 0
 }
 Install() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=/usr" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=/usr" "${@}" || return 1
 return 0
 }
 InstallJ1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=/usr" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=/usr" "${@}" || return 1
 return 0
 }
 InstallRoot() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=" "${@}" || return 1
 return 0
 }
 InstallRootJ1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Host" "--prefix=" "${@}" || return 1
 return 0
 }
 InstallCross64() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 InstallCross64J1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 InstallCross64Root() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}"
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
 return 0
 }
 InstallCross64RootJ1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}"
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
 return 0
 }
 Native64EnvSetup() {
 set -x
-trap 'error' ERR
-set +e
 export CROSS_PREFIX=/opt/Cross64 || return 1
 export TARGET=x86_64-linux-gnu || return 1
 export CC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
@@ -295,8 +260,6 @@ return 0
 }
 Native64EnvCleanUp() {
 set -x
-trap 'error' ERR
-set +e
 unset CROSS_PREFIX || return 1
 unset TARGET || return 1
 unset CC || return 1
@@ -327,56 +290,46 @@ return 0
 }
 InstallNative64() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-Native64EnvSetup
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
-Native64EnvCleanUp
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
 return 0
 }
 InstallNative64J1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-Native64EnvSetup
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
-Native64EnvCleanUp
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
 return 0
 }
 InstallNative64Root() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-Native64EnvSetup
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
-Native64EnvCleanUp
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
 return 0
 }
 InstallNative64RootJ1() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-Native64EnvSetup
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
-Native64EnvCleanUp
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
 return 0
 }
 RemoveEngine() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local TitlePostfix="${3}" || return 1
@@ -386,55 +339,45 @@ local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand="nop" || return 1
 local DeployCommand="make uninstall" || return 1
-InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Erasing' 'Cleaning'
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Erasing' 'Cleaning' || return 1
 return 0
 }
 Remove() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveEngine "${Package}" "${Format}" "For Host"  "--prefix=/usr" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Host"  "--prefix=/usr" "${@}" || return 1
 return 0
 }
 RemoveRoot() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveEngine "${Package}" "${Format}" "For Host" "--prefix=" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Host" "--prefix=" "${@}" || return 1
 return 0
 }
 RemoveCross64() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}"
+RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 RemoveNative64() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-Native64EnvSetup
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}"
-Native64EnvCleanUp
+Native64EnvSetup || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
 return 0
 }
 Check() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
@@ -443,13 +386,11 @@ local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@} --help" || return 1
 local MakeCommand="nop" || return 1
 local DeployCommand="nop" || return 1
-InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
 return 0
 }
 CheckMake() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
@@ -458,13 +399,11 @@ local Subfolder="W0RK" || return 1
 local ConfigureCommand="../configure ${@}" || return 1
 local MakeCommand='make -pRrsq > TMP 2>&1 || true' || return 1
 local DeployCommand='killall -9 -e simpletext || true; /Applications/SimpleText.app/Contents/RedStar/simpletext TMP; rm -f TMP' || return 1
-InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning'
+InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
 return 0
 }
 KernelInstall() {
 set -x
-trap 'error' ERR
-set +e
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 local TitleText="Installing Kernel ${Package}" || return 1
@@ -499,17 +438,14 @@ return 0
 }
 EnterStage() {
 set -x
-trap 'error' ERR
-set +e
-echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Encoding=UTF-8" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Type=Application" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Exec=konsole -e bash -c \"cd /root/Desktop/v3.5\ Update\ Combo; ./scripts/${1}.sh\"" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Terminal=false" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Name=v3.5 Update Combo" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
-echo "Categories=Applocation" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop'
+echo "[Desktop Entry]" > '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Encoding=UTF-8" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Type=Application" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Exec=konsole -e bash -c \"cd /root/Desktop/v3.5\ Update\ Combo; ./scripts/${1}.sh\"" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Terminal=false" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Name=v3.5 Update Combo" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
+echo "Categories=Applocation" >> '/root/Desktop/v3.5 Update Combo/scripts/next.desktop' || return 1
 set +x
-trap '' ERR
 for ((i = 5; i > 0; i--)); do
 echo -ne "Press any key in $i to abort automatic reboot... \r"
 if read -rs -n 1 -t 1; then
@@ -527,3 +463,6 @@ echo -e "\nRebooting now... "
 sleep 1
 reboot
 }
+export PATH=/opt/Cross64/bin:$PATH
+trap 'error' ERR
+set +e
