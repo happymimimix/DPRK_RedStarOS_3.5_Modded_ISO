@@ -29,7 +29,7 @@ title "Set system language"
 yum remove sgobasis3.0-ko -y
 service sat restart
 sed -i 's/ko_KP/en_US/g' /etc/sysconfig/i18n /usr/share/config/kdeglobals
-sed -i 's/ko_KP.UTF-8/en/g' /etc/sat/config /usr/share/sat/web-lib.pl
+sed -i 's/ko_KP.UTF-8/en_US.UTF-8/g' /etc/sat/config /usr/share/sat/web-lib.pl
 service sat restart
 rm -rf /Applications/Naenara.app/Contents/lib/extensions/langpack-ko@firefox.mozilla.org
 title "Copy extra components"
