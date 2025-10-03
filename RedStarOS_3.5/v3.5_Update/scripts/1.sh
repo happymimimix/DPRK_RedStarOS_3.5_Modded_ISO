@@ -83,7 +83,7 @@ InstallCross64 binutils-2.34 xz --mandir=/opt/Cross64/x86_64-linux-gnu/share/man
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
-"../configure --host=i386-pc-linux-gnu --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 --without-headers \
 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release --enable-bootstrap \
@@ -99,52 +99,57 @@ cd /usr/src/kernels/linux-3.19.8
 title Installing Kernel 3.19.8 For Cross-x86_64 \[Deploying Headers\]
 make headers_install ARCH=x86_64 INSTALL_HDR_PATH=/opt/Cross64/x86_64-linux-gnu
 CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
-"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
---host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
+"../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu \
+--with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
 "nop" \
 "make install-headers install-bootstrap-headers=yes"
 CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 2)" "W0RK" \
-"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
---host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
+"../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu \
+--with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
 "make csu/subdir_lib -j$(grep -c ^processor /proc/cpuinfo)" \
 "install csu/crt1.o csu/crti.o csu/crtn.o /opt/Cross64/x86_64-linux-gnu/lib"
 cp -rnv /usr/include/* /opt/Cross64/x86_64-linux-gnu/include
 cp -fv /opt/Cross64/x86_64-linux-gnu/include/gnu/stubs-32.h /opt/Cross64/x86_64-linux-gnu/include/gnu/stubs-64.h
+rm -f '/opt/Cross64/x86_64-linux-gnu/usr'
+ln -sdf '/opt/Cross64/x86_64-linux-gnu/' '/opt/Cross64/x86_64-linux-gnu/usr'
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
-"../configure --host=i386-pc-linux-gnu --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-ld=yes --enable-gold=no \
---enable-threads=posix --enable-checking=release --enable-bootstrap \
+--enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
 --enable-shared --disable-multilib --enable-host-shared" \
-"make all-gcc all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
-"make install-target-libgcc all-gcc"
+"make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target-libgcc"
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
-"../configure --host=i386-pc-linux-gnu --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
+"../configure --target=x86_64-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-ld=yes --enable-gold=no \
---enable-threads=posix --enable-checking=release --enable-bootstrap \
+--enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
 --enable-shared --disable-multilib --enable-host-shared" \
-"make all-gcc all-target-libssp -j$(grep -c ^processor /proc/cpuinfo)" \
-"make install-target-libssp all-gcc"
+"make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install-target"
 export CFLAGS="-O2 -g -fno-common"
 export CXXFLAGS="-O2 -g -fno-common"
 CustomInstall glibc-2.23 xz "For Cross-x86_64" "W0RK" \
-"../configure --prefix=/opt/Cross64/x86_64-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
---host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include \
+"../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+--host=x86_64-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu \
+--with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 unset CFLAGS
 unset CXXFLAGS
-InstallCross64 gcc-6.5.0 xz --host=i386-pc-linux-gnu --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
+InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/x86_64-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-headers=/opt/Cross64/x86_64-linux-gnu/include --includedir=/opt/Cross64/x86_64-linux-gnu/include \
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
