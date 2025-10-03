@@ -5,7 +5,7 @@ rm -f '/bin/pkgtool' || return 1
 ln -sf '/root/Desktop/v3.5 Update Combo/scripts/pkgutils.sh' '/bin/pkgtool' || return 1
 return 0
 }
-error() {
+operationerror() {
 kdialog --title "Operation Cannot Be Completed" --error "An unexpected critical error has occured during the installation. \nPlease copy the console output and send them to the development team of Red Star OS 3.5 on discord. \nDiscord server invite link: discord.gg/MY68R2Quq5\n\nWe apologize for the inconvenience. \nThe installation script will now stop. "
 return 1
 }
@@ -210,7 +210,7 @@ export CROSS_PREFIX=/opt/Cross64 || return 1
 export TARGET=x86_64-linux-gnu || return 1
 export CC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
 export GCC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
-export CXX=${CROSS_PREFIX}/bin/${TARGET}-g++ || return 1
+export CXX=${CROSS_PREFIX}/bin/${TARGET}-c++ || return 1
 export GXX=${CROSS_PREFIX}/bin/${TARGET}-g++ || return 1
 export CPP=${CROSS_PREFIX}/bin/${TARGET}-cpp || return 1
 export CXXFILT=${CROSS_PREFIX}/bin/${TARGET}-c++filt || return 1
@@ -226,7 +226,6 @@ export OBJCOPY=${CROSS_PREFIX}/bin/${TARGET}-objcopy || return 1
 export OBJDUMP=${CROSS_PREFIX}/bin/${TARGET}-objdump || return 1
 export READELF=${CROSS_PREFIX}/bin/${TARGET}-readelf || return 1
 export ELFEDIT=${CROSS_PREFIX}/bin/${TARGET}-elfedit || return 1
-export DLLTOOL=${CROSS_PREFIX}/bin/${TARGET}-dlltool || return 1
 export GCOV=${CROSS_PREFIX}/bin/${TARGET}-gcov || return 1
 export GCOV_DUMP=${CROSS_PREFIX}/bin/${TARGET}-gcov-dump || return 1
 export GCOV_TOOL=${CROSS_PREFIX}/bin/${TARGET}-gcov-tool || return 1
@@ -250,7 +249,6 @@ $OBJCOPY --help || return 1
 $OBJDUMP --help || return 1
 $READELF --help || return 1
 $ELFEDIT --help || return 1
-$DLLTOOL --help || return 1
 $GCOV --help || return 1
 $GCOV_DUMP --help || return 1
 $GCOV_TOOL --help || return 1
@@ -280,7 +278,6 @@ unset OBJCOPY || return 1
 unset OBJDUMP || return 1
 unset READELF || return 1
 unset ELFEDIT || return 1
-unset DLLTOOL || return 1
 unset GCOV || return 1
 unset GCOV_DUMP || return 1
 unset GCOV_TOOL || return 1
@@ -294,7 +291,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -304,7 +301,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -314,7 +311,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -324,7 +321,47 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+InstallNative64Cross() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+InstallNative64CrossJ1() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+InstallNative64RootCross() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+InstallNative64RootCrossJ1() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -366,13 +403,51 @@ shift 2 || return 1
 RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
+RemoveCross64Root() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
+return 0
+}
 RemoveNative64() {
 set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--target=x86_64-linux-gnu --prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --with-build-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+RemoveNative64Root() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+RemoveNative64Cross() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+Native64EnvCleanUp || return 1
+return 0
+}
+RemoveNative64RootCross() {
+set -x
+local Package="${1}" || return 1
+local Format="${2}" || return 1
+shift 2 || return 1
+Native64EnvSetup || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -382,8 +457,8 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 local TitleText="Checking Configure Options Of ${Package}" || return 1
-local Subfolder="W0RK" || return 1
-local ConfigureCommand="../configure ${@} --help" || return 1
+local Subfolder="" || return 1
+local ConfigureCommand="./configure ${@} --help" || return 1
 local MakeCommand="nop" || return 1
 local DeployCommand="nop" || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
@@ -395,8 +470,8 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 local TitleText="Checking Make Targets Of ${Package}" || return 1
-local Subfolder="W0RK" || return 1
-local ConfigureCommand="../configure ${@}" || return 1
+local Subfolder="" || return 1
+local ConfigureCommand="./configure ${@}" || return 1
 local MakeCommand='make -pRrsq > TMP 2>&1 || true' || return 1
 local DeployCommand='killall -9 -e simpletext || true; /Applications/SimpleText.app/Contents/RedStar/simpletext TMP; rm -f TMP' || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Deploying' 'Cleaning' || return 1
@@ -404,14 +479,14 @@ return 0
 }
 KernelInstall() {
 set -x
-local Package="${1}" || return 1
+local Package="linux-${1}" || return 1
 local Format="${2}" || return 1
 local TitleText="Installing Kernel ${Package}" || return 1
 local ConfigureCommand="make allyesconfig" || return 1
 local MakeCommand="make -j$(grep -c ^processor /proc/cpuinfo)" || return 1
 local DeployCommandA="make modules_install" || return 1
 local DeployCommandB="make install" || return 1
-local DeployCommandC="make headers_install INSTALL_HDR_PATH=/usr/include" || return 1
+local DeployCommandC="make headers_install INSTALL_HDR_PATH=/usr" || return 1
 local TitlePostfixA="Extracting" || return 1
 local TitlePostfixB="Configuring" || return 1
 local TitlePostfixC="Compiling" || return 1
@@ -464,5 +539,5 @@ sleep 1
 reboot
 }
 export PATH=/opt/Cross64/bin:$PATH
-trap 'error' ERR
+trap 'operationerror' ERR
 set +e
