@@ -177,7 +177,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 InstallCross64J1() {
@@ -185,7 +185,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 InstallCross64Root() {
@@ -193,7 +193,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64/x86_64-pc-linux-gnu" "${@}" || return 1
 return 0
 }
 InstallCross64RootJ1() {
@@ -201,13 +201,13 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64/x86_64-pc-linux-gnu" "${@}" || return 1
 return 0
 }
 Native64EnvSetup() {
 set -x
 export CROSS_PREFIX=/opt/Cross64 || return 1
-export TARGET=x86_64-linux-gnu || return 1
+export TARGET=x86_64-pc-linux-gnu || return 1
 export CC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
 export GCC=${CROSS_PREFIX}/bin/${TARGET}-gcc || return 1
 export CXX=${CROSS_PREFIX}/bin/${TARGET}-g++ || return 1
@@ -291,7 +291,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -301,7 +301,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -311,7 +311,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -321,7 +321,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -331,7 +331,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -341,7 +341,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -351,7 +351,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -361,7 +361,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" '1' "For Cross-x86_64-Native" "--prefix=/opt/Cross64/x86_64-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -400,7 +400,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64" "${@}" || return 1
 return 0
 }
 RemoveCross64Root() {
@@ -408,7 +408,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-linux-gnu --prefix=/opt/Cross64/x86_64-linux-gnu" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64/x86_64-pc-linux-gnu" "${@}" || return 1
 return 0
 }
 RemoveNative64() {
@@ -417,7 +417,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -427,7 +427,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix= --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -437,7 +437,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -447,7 +447,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64/x86_64-linux-gnu --with-sysroot=/opt/Cross64/x86_64-linux-gnu --includedir=/opt/Cross64/x86_64-linux-gnu/include" "${@}" || return 1
+RemoveEngine "${Package}" "${Format}" "For Host-x64" "--prefix=/opt/Cross64/x86_64-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
