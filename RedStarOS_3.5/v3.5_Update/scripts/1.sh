@@ -28,8 +28,8 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-shared --enable-host-shared \
 --enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --enable-libsanitizer --enable-libssp --enable-libstdc++-v3 --enable-libvtv --enable-libquadmath-support \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify
 Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
@@ -38,8 +38,8 @@ Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-shared --enable-host-shared \
 --enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --enable-libsanitizer --enable-libssp --enable-libstdc++-v3 --enable-libvtv --enable-libquadmath-support \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify
 Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
@@ -48,8 +48,8 @@ Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-shared --enable-host-shared \
 --enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --enable-libsanitizer --enable-libssp --enable-libstdc++-v3 --enable-libvtv --enable-libquadmath-support \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify
 Install ncurses-6.0 gz --with-ada --enable-ext-colors --enable-ext-mouse
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
@@ -87,8 +87,8 @@ InstallCross64 binutils-2.34 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/
 --enable-shared --enable-host-shared \
 --enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --enable-libsanitizer --enable-libssp --enable-libstdc++-v3 --enable-libvtv --enable-libquadmath-support \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify
 cp -rnv /opt/Cross64/i686-pc-linux-gnu/x86_64-pc-linux-gnu/* /opt/Cross64/x86_64-pc-linux-gnu/
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
@@ -136,7 +136,8 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 "make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target-libgcc"
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
-"sed -i 's/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 5/echo Defused Error: \\\\\"Link tests are not allowed after GCC_NO_EXECUTABLES.\\\\\"/g' /workspace/gcc-6.5.0/libssp/configure /workspace/gcc-6.5.0/libstdc++-v3/configure || return 1; \
+"sed -i 's/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 5/echo Defused Error: \\\\\"Link tests are not allowed after GCC_NO_EXECUTABLES.\\\\\"/g' \
+/workspace/gcc-6.5.0/libssp/configure /workspace/gcc-6.5.0/libstdc++-v3/configure /workspace/gcc-6.5.0/libquadmath/configure /workspace/gcc-6.5.0/boehm-gc/configure /workspace/gcc-6.5.0/libobjc/configure || return 1; \
 ../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
@@ -145,12 +146,12 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
 --disable-shared --enable-host-shared \
---enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --disable-libcilkrts --enable-libcpp \
+--enable-libada --disable-libatomic --enable-libbacktrace --enable-libcc1 --disable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --disable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --disable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --disable-libsanitizer --enable-libssp --enable-libstdc++-v3 --disable-libvtv --enable-libquadmath-support \
+--enable-libiberty --disable-libitm --enable-libjava --disable-libmpx --enable-libobjc --disable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --disable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify" \
-"make all-target -j1" \
+"make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target"
 export CFLAGS="-O2 -g -fno-common"
 export CXXFLAGS="-O2 -g -fno-common"
@@ -172,8 +173,8 @@ InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man 
 --enable-shared --enable-host-shared \
 --enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
 --enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-liboffloadmic \
---enable-libquadmath --enable-libsanitizer --enable-libssp --enable-libstdc++-v3 --enable-libvtv --enable-libquadmath-support \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdc++-v3 --enable-libcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-lto --enable-tls --enable-objc-gc --enable-vtable-verify
 bash
 KernelInstall 3.19.8 gz
