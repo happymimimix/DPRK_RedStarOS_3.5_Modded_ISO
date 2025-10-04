@@ -25,7 +25,7 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
---enable-shared --disable-multilib --enable-host-shared \
+--enable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
@@ -33,7 +33,7 @@ Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
---enable-shared --disable-multilib --enable-host-shared \
+--enable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
@@ -41,7 +41,7 @@ Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
---enable-shared --disable-multilib --enable-host-shared \
+--enable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
@@ -78,10 +78,11 @@ InstallCross64 binutils-2.34 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
---enable-shared --disable-multilib --enable-host-shared \
+--enable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
+cp -rnv /opt/Cross64/i686-pc-linux-gnu/x86_64-pc-linux-gnu/* /opt/Cross64/x86_64-pc-linux-gnu/
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
 "../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --without-headers \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
@@ -89,7 +90,7 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
 --enable-threads=posix --enable-checking=release --enable-bootstrap \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
---enable-shared --disable-multilib --enable-host-shared" \
+--enable-shared --enable-host-shared" \
 "make all-gcc -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-gcc"
 title Installing Kernel 3.19.8 For Cross-x86_64 \[Extracting\]
@@ -102,18 +103,17 @@ CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
 "../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --host=x86_64-pc-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu \
 --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
+--enable-shared --enable-profile --enable-obsolete-rpc --disable-werror" \
 "nop" \
 "make install-headers install-bootstrap-headers=yes"
 CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 2)" "W0RK" \
-"../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
+"../configure --prefix=/opt/Cross64/x86_64-pc-linux-gnu --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --host=x86_64-pc-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu \
 --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
+--enable-shared --enable-profile --enable-obsolete-rpc --disable-werror" \
 "make csu/subdir_lib -j$(grep -c ^processor /proc/cpuinfo)" \
 "install csu/crt1.o csu/crti.o csu/crtn.o /opt/Cross64/x86_64-pc-linux-gnu/lib"
-cp -rnv /usr/include/* /opt/Cross64/x86_64-pc-linux-gnu/include
-cp -fv /opt/Cross64/x86_64-pc-linux-gnu/include/gnu/stubs-32.h /opt/Cross64/x86_64-pc-linux-gnu/include/gnu/stubs-64.h
+touch /opt/Cross64/x86_64-pc-linux-gnu/include/gnu/stubs.h
 rm -f '/opt/Cross64/x86_64-pc-linux-gnu/usr'
 ln -sdf '/opt/Cross64/x86_64-pc-linux-gnu/' '/opt/Cross64/x86_64-pc-linux-gnu/usr'
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
@@ -124,18 +124,19 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 --enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
---enable-shared --disable-multilib --enable-host-shared" \
+--disable-shared --enable-host-shared" \
 "make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target-libgcc"
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
-"../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
+"sed -i 's/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 5/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 0/g' /workspace/gcc-6.5.0/libssp/configure; \
+../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
 --enable-ld=yes --enable-gold=no \
 --enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
---enable-shared --disable-multilib --enable-host-shared" \
+--disable-shared --enable-host-shared" \
 "make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target"
 export CFLAGS="-O2 -g -fno-common"
@@ -144,7 +145,7 @@ CustomInstall glibc-2.23 xz "For Cross-x86_64" "W0RK" \
 "../configure --prefix=/opt/Cross64 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --host=x86_64-pc-linux-gnu --build=i386-pc-linux-gnu --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu \
 --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-shared --enable-profile --disable-multi-arch --enable-obsolete-rpc --disable-werror" \
+--enable-shared --enable-profile --enable-obsolete-rpc --disable-werror" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 unset CFLAGS
@@ -155,7 +156,7 @@ InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man 
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
---enable-shared --disable-multilib --enable-host-shared \
+--enable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
