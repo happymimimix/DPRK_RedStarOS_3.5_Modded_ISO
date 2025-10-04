@@ -129,7 +129,6 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 "make install-target-libgcc"
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 "sed -i 's/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 5/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 0/g' /workspace/gcc-6.5.0/libssp/configure; \
-sed -zi 's/as_fn_error \"C compiler cannot create executables\\nSee \\\\\`config.log'\\'' for more details.\" \"\$LINENO\" 5/as_fn_error \"C compiler cannot create executables\\nSee \\\\\`config.log'\\'' for more details.\" \"\$LINENO\" 0/g' /workspace/gcc-6.5.0/libgomp/configure; \
 ../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
@@ -139,7 +138,7 @@ sed -zi 's/as_fn_error \"C compiler cannot create executables\\nSee \\\\\`config
 --enable-languages=c,c++,objc,obj-c++ \
 --disable-shared --enable-host-shared \
 --enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
---enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
+--enable-libquadmath --enable-libquadmath-support --disable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify" \
 "make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target"
