@@ -21,7 +21,7 @@ Install isl-0.14 bz2
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
@@ -30,7 +30,7 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
 Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-shared --enable-host-shared \
@@ -38,7 +38,7 @@ Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify
 Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-shared --enable-host-shared \
@@ -75,7 +75,7 @@ Install sed-4.4 xz
 Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 Cross64CleanUp
 InstallCross64 binutils-2.34 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-shared --enable-host-shared \
@@ -86,7 +86,7 @@ cp -rnv /opt/Cross64/i686-pc-linux-gnu/x86_64-pc-linux-gnu/* /opt/Cross64/x86_64
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 1)" "W0RK" \
 "../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --without-headers \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --enable-bootstrap \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
@@ -120,7 +120,7 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 "../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
@@ -129,14 +129,18 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 3)" "W0RK" \
 "make install-target-libgcc"
 CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 "sed -i 's/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 5/as_fn_error \"Link tests are not allowed after GCC_NO_EXECUTABLES.\" \"\$LINENO\" 0/g' /workspace/gcc-6.5.0/libssp/configure; \
+sed -zi 's/as_fn_error \"C compiler cannot create executables\\nSee \\\\\`config.log'\\'' for more details.\" \"\$LINENO\" 5/as_fn_error \"C compiler cannot create executables\\nSee \\\\\`config.log'\\'' for more details.\" \"\$LINENO\" 0/g' /workspace/gcc-6.5.0/libgomp/configure; \
 ../configure --target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 \
 --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
---disable-shared --enable-host-shared" \
+--disable-shared --enable-host-shared \
+--enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
+--enable-libquadmath --enable-libquadmath-support --enable-libgomp --enable-libvtv \
+--enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify" \
 "make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target"
 export CFLAGS="-O2 -g -fno-common"
@@ -152,7 +156,7 @@ unset CFLAGS
 unset CXXFLAGS
 InstallCross64 gcc-6.5.0 xz --mandir=/opt/Cross64/x86_64-pc-linux-gnu/share/man --infodir=/opt/Cross64/x86_64-pc-linux-gnu/share/info \
 --with-sysroot=/opt/Cross64/x86_64-pc-linux-gnu --with-headers=/opt/Cross64/x86_64-pc-linux-gnu/include --includedir=/opt/Cross64/x86_64-pc-linux-gnu/include \
---enable-ld=yes --enable-gold=no \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=ada,c,c++,fortran,go,java,jit,lto,objc,obj-c++ \
