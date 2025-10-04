@@ -137,9 +137,9 @@ CustomInstall gcc-6.5.0 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
 --enable-languages=c,c++,objc,obj-c++ \
 --disable-shared --enable-host-shared \
---enable-lto --enable-tls --enable-libada --enable-libsanitizer --enable-libssp \
---enable-libquadmath --enable-libquadmath-support --disable-libgomp --enable-libvtv \
---disable-libgcj --enable-objc-gc --enable-vtable-verify" \
+--enable-lto --enable-tls --enable-libada --disable-libsanitizer --enable-libssp \
+--enable-libquadmath --enable-libquadmath-support --disable-libgomp --disable-libvtv \
+--disable-libgcj --disable-libmpx --enable-objc-gc --enable-vtable-verify" \
 "make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target"
 export CFLAGS="-O2 -g -fno-common"
