@@ -3,6 +3,20 @@ This an unofficial mod of DPRK's Red Star OS 3.0 Desktop operating system, provi
 
 Download a prebuilt ISO of this mod here: https://github.com/happymimimix/DPRK_RedStarOS_3.5_Modded_ISO/releases
 
+# How to install:
+
+GitHub has a 2 GB file size limit for release artefacts. Unfortunately, the RedStar OS 3.5 modded ISO is way too big to fit within that limit. Split 7z archives were used to get around this limitation. 
+
+You must to download **ALL** the \*.7z.??? files and place them in the same directory, then open any one of these files in your favorite archive software and click extract. 
+
+Once you have obtained the ISO image, mount it in your favorite hypervisor software and power on the virtual machine. 
+
+Complete the installation process as normal. 
+
+Once you have reached the desktop, mount the same ISO image again and click the blue button in the confirmation dialog when prompted. 
+
+**Note: there are no separate ISO images for post-installation. There is only ONE RedStarOS_3.5_Modded.iso file. All post-installation scripts are MERGED with the OS installer inside ONE SINGLE ISO image!** 
+  
 # How to build the ISO yourself
 Download the original ISO from here: https://archive.org/download/red-star-en/redstar_desktop3.0_sign.iso
 
