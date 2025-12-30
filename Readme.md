@@ -41,4 +41,4 @@ Git LFS doesn't work in zip!
 # Encountered a problem? 
 Try to ask ChatGPT first: https://chatgpt.com/share/6953c86e-8254-8004-83f5-8d88b83e0e75
 
-If ChatGPT can't solve your problem, try asking on [RedStarOS 3.5 Official Discord Server](discord.gg/MY68R2Quq5) or [Github Issues](github.com/happymimimix/DPRK_RedStarOS_3.5_Modded_ISO/issues). 
+If ChatGPT can't solve your problem, try asking on [RedStarOS 3.5 Official Discord Server](https://discord.gg/MY68R2Quq5) or [Github Issues](https://github.com/happymimimix/DPRK_RedStarOS_3.5_Modded_ISO/issues). 
