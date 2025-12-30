@@ -7,7 +7,7 @@ Download a prebuilt ISO of this mod here: https://github.com/happymimimix/DPRK_R
 
 Github has a 2 GB file size limit for release artefacts, and unfortunately, the RedStarOS 3.5 modded ISO is way too big to fit within that limit. So, splitted 7z archives were used to get around this limitation. 
 
-You must to download **ALL** the \*.7z.??? files and place them in the same directory, then open any one of these files in your favorite archive software and click extract. 
+You must download **ALL** of the \*.7z.??? files and place them in the same directory, then open any one of these files in your favorite archive software and click extract. 
 
 Once you have obtained the ISO image, mount it in your favorite hypervisor software and power on the virtual machine. 
 
