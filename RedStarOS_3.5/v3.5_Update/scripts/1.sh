@@ -17,11 +17,11 @@ Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install m4-1.4.18 xz
-InstallNoCheck libtool-2.4.6 xz --enable-shared=yes --enable-static=yes
+Install libtool-2.4.6 xz --enable-shared=yes --enable-static=yes --with-gnu-ld
 Install guile-1.8.8 gz
-InstallNoCheck autogen-5.18.16 xz
-InstallNoCheck autoconf-2.69 xz
-InstallNoCheck automake-1.15 xz
+Install autogen-5.18.5 xz
+Install autoconf-2.69 xz
+Install automake-1.15 xz
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
@@ -60,12 +60,7 @@ Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls
-Install libtool-2.4.6 xz --enable-shared=yes --enable-static=yes
 Install ncurses-6.0 gz --with-ada --enable-ext-colors --enable-ext-mouse
-Install guile-1.8.8 gz
-Install autogen-5.18.16 xz
-Install autoconf-2.69 xz
-Install automake-1.15 xz
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
 Install mpfr-4.1.0 bz2 --enable-shared
 Install mpc-1.2.1 gz --enable-shared
