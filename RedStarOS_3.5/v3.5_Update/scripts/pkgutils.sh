@@ -837,5 +837,7 @@ sleep 1
 reboot
 }
 export PATH=/opt/Cross64/bin:/opt/NewRoot/usr/bin:/opt/NewRoot/usr/sbin:$PATH
+export PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
+export PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1
 trap 'operationerror' ERR
 set +e

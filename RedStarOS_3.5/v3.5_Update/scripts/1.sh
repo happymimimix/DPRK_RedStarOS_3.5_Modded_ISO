@@ -12,15 +12,19 @@ set +e
 yum install @"Development Tools" @"Development Libraries" -y -x "*PAE*" -x "auto*" -x "xterm"
 trap 'scripterror' ERR
 set +e
-Install bc-1.07.1 gz --enable-shared
-Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
+Install m4-1.4.18 xz --enable-c++ --enable-threads=posix --enable-dependency-tracking
+Install autoconf-2.69 xz
+Install libtool-2.4.6 xz --enable-ltdl-install --enable-shared=yes --enable-static=yes --with-gnu-ld
+Install libunistring-1.1 gz
+Install libffi-3.0.13 gz
+Install libatomic_ops-7.6.2 gz
+Install gc-7.6.2 gz
+Install guile-2.0.14 gz
+Install autogen-5.18.7 xz
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
-Install m4-1.4.18 xz
-Install libtool-2.4.6 xz --enable-shared=yes --enable-static=yes --with-gnu-ld
-Install guile-1.8.8 gz
-Install autogen-5.18.5 xz
-Install autoconf-2.69 xz
+Install bc-1.07.1 gz --enable-shared
+Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
 Install automake-1.15 xz
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
@@ -67,7 +71,6 @@ Install mpc-1.2.1 gz --enable-shared
 Install isl-0.24 bz2
 Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
-Install libunistring-1.1 gz
 Install libiconv-1.16 gz
 Install cpio-2.13 gz
 CustomInstall openssl-1.0.2u gz "For Host" "" \
