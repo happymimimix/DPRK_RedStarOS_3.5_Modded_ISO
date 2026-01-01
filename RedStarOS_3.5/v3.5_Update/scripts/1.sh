@@ -21,6 +21,7 @@ Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
 Install guile-2.0.14 gz
 Install gpref-3.1 gz
+Install coreutils-7.6 xz
 Install autogen-5.18.7 xz
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
