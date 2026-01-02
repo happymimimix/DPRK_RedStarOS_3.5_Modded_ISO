@@ -20,9 +20,10 @@ Install libffi-3.0.13 gz
 Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
 Install guile-2.0.14 gz
-Install gpref-3.1 gz
 Install coreutils-7.6 xz
-Install autogen-5.18.7 xz
+Install gpref-3.1 gz
+InstallRoot sed-4.2.2 bz2
+InstallNoCheck autogen-5.18.7 xz
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
@@ -88,7 +89,6 @@ Install gnutls-3.3.30 xz --enable-shared
 Install wget-1.19.5 gz
 Install bison-3.5.4 xz 
 Install gawk-4.2.1 xz
-Install sed-4.4 xz
 Install texinfo-6.8 xz --enable-dependency-tracking
 rm -f /sbin/install-info
 ln -sf /usr/bin/install-info /sbin/install-info
