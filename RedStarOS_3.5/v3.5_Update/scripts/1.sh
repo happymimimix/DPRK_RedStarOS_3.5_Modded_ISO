@@ -93,7 +93,7 @@ Install texinfo-6.8 xz --enable-dependency-tracking
 rm -f /sbin/install-info
 ln -sf /usr/bin/install-info /sbin/install-info
 Install help2man-1.47.17 xz
-InstallNoCheck Python-3.7.6 xz --enable-optimizations --with-pydebug
+Install Python-3.7.6 xz --enable-optimizations --with-pydebug
 Install cvs-1.12.13 bz2 --enable-rootcommit --enable-case-sensitivity --enable-proxy --enable-server --enable-server-flow-control --enable-client --enable-password-authenticated-client --enable-cvs-ndbm
 Install libarchive-3.5.3 xz
 Cross64CleanUp
