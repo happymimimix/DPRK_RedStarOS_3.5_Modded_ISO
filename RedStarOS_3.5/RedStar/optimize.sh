@@ -27,12 +27,12 @@ rpm -i '/media/RedStarOS_3.5/RedStar/RPMS/patch-2.5.4-40.rs3.0.i386.rpm'
 patch -i '/media/RedStarOS_3.5/repodata/yumfix.diff' "/usr/lib/python2.6/site-packages/yum/rpmsack.py" -N
 title "Set system language"
 sed -i 's/ko_KP/en_US/g' /etc/sysconfig/i18n /usr/share/config/kdeglobals
+rm -rf /Applications/Naenara.app/Contents/lib/extensions/langpack-ko@firefox.mozilla.org
 yum remove sgobasis3.0-ko -y
 service sat stop
 sed -i 's/ko_KP.UTF-8/en/g' /etc/sat/config /usr/share/sat/web-lib.pl
 service sat start
 service sat restart
-rm -rf /Applications/Naenara.app/Contents/lib/extensions/langpack-ko@firefox.mozilla.org
 title "Copy extra components"
 mkdir '/root/Desktop/VMwareTools'
 cp '/media/RedStarOS_3.5/repodata/vmtools.tar.gz' '/root/Desktop/VMwareTools/vmtools.tar.gz' -fd

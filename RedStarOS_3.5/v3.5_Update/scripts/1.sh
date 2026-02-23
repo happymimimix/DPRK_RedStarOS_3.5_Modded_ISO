@@ -19,9 +19,9 @@ Install libunistring-1.1 gz
 Install libffi-3.0.13 gz
 Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
-Install guile-2.0.14 gz
+Install guile-2.0.14 xz
 Install coreutils-7.6 xz
-Install gpref-3.1 gz
+Install gperf-3.1 gz
 InstallRoot sed-4.2.2 bz2
 InstallNoCheck autogen-5.18.7 xz
 Install zlib-1.2.11 xz
