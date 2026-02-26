@@ -167,7 +167,6 @@ local ConfigureCommand="${5}" || return 1
 local MakeCommand="${6}" || return 1
 local CheckCommand="${7}" || return 1
 local DeployCommand="${8}" || return 1
-shift 7 || return 1
 InstallBase "${Package}" "${Format}" "${TitleText}" "${Subfolder}" "${ConfigureCommand}" "${MakeCommand}" "${CheckCommand}" "${DeployCommand}" 'Extracting' 'Configuring' 'Compiling' 'Validating' 'Deploying' 'Cleaning' || return 1
 return 0
 }
