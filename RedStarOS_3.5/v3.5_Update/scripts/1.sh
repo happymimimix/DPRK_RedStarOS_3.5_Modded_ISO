@@ -87,8 +87,8 @@ Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
 Install libiconv-1.16 gz
 Install cpio-2.13 gz
-CustomInstall openssl-1.0.2u gz "For Host" "" \
-"./config --openssldir=/usr/ssl" \
+CustomInstall openssl-1.1.1d gz "For Host" "" \
+"./config --prefix=/usr --openssldir=/usr/ssl" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
 "make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
