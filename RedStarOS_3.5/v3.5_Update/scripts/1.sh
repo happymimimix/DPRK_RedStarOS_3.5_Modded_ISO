@@ -23,7 +23,9 @@ Install guile-2.0.14 xz
 Install coreutils-7.6 xz
 Install gperf-3.1 gz
 InstallRoot sed-4.2.2 bz2
-InstallNoCheck autogen-5.18.7 xz
+export XFAIL_TESTS=str2m.test
+Install autogen-5.18.7 xz
+unset XFAIL_TESTS
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
@@ -87,7 +89,9 @@ Install libffi-3.3 gz
 Install p11-kit-0.23.18.1 gz
 Install gnutls-3.3.30 xz --enable-shared
 Install wget-1.19.5 gz
-Install bison-3.5.4 xz 
+export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
+Install bison-3.5.4 xz
+unset CXXFLAGS
 Install gawk-4.2.1 xz
 Install texinfo-6.8 xz --enable-dependency-tracking
 rm -f /sbin/install-info
