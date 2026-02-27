@@ -30,7 +30,13 @@ Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
-Install automake-1.15 xz
+CustomInstall automake-1.15 xz "For Host" "W0RK" \
+"../configure --prefix=/usr" \
+"make all -j$(grep -c ^processor /proc/cpuinfo)" \
+"echo 'exit 77' > ../t/python-am-path-iftrue.sh; \
+echo 'exit 77' > ../t/aclocal-deleted-header-aclocal-amflags.sh; \
+make check -j$(grep -c ^processor /proc/cpuinfo)" \
+"make install"
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
@@ -81,7 +87,7 @@ Install cpio-2.13 gz
 CustomInstall openssl-1.0.2u gz "For Host" "" \
 "./config --openssldir=/usr/ssl" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 Install expat-2.2.10 xz
 Install unbound-1.12.0 gz
@@ -153,7 +159,7 @@ cd /workspace/gcc-6.5.0/W0RK; \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls" \
 "make all-gcc -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-gcc; \
 CleanUp gmp-4.3.2; \
 CleanUp mpfr-2.4.2; \
@@ -203,7 +209,7 @@ cd /workspace/gcc-6.5.0/W0RK; \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls" \
 "make all-target-libgcc -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target-libgcc; \
 CleanUp gmp-4.3.2; \
 CleanUp mpfr-2.4.2; \
@@ -234,7 +240,7 @@ cd /workspace/gcc-6.5.0/W0RK; \
 --enable-libgcj --enable-static-libjava=unicows --disable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install; \
 CleanUp gmp-4.3.2; \
 CleanUp mpfr-2.4.2; \
@@ -249,7 +255,7 @@ CustomInstall glibc-2.23 xz "For Cross-x86_64 (Bootstrap Stage 4)" "W0RK" \
 --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --enable-mathvec --disable-werror \
 libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 unset CFLAGS
 unset CXXFLAGS
@@ -278,7 +284,7 @@ cd /workspace/gcc-6.5.0/W0RK; \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls" \
 "make all-target -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install-target; \
 CleanUp gmp-4.3.2; \
 CleanUp mpfr-2.4.2; \
@@ -293,7 +299,7 @@ CustomInstall glibc-2.23 xz "For Cross-x86_64 (Final Stage)" "W0RK" \
 --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --enable-mathvec --disable-werror \
 libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 rm -f '/opt/NewRoot/lib'
 mv -vf '/opt/NewRoot/lib64' '/opt/NewRoot/lib644'
@@ -307,7 +313,7 @@ CustomInstall glibc-2.23 xz "For Cross-x86_64 (MultiLib Support)" "W0RK" \
 --enable-shared --enable-profile --enable-multi-arch --enable-obsolete-rpc --enable-mathvec --disable-werror \
 libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install"
 unset CFLAGS
 unset CXXFLAGS
@@ -339,7 +345,7 @@ cd /workspace/gcc-6.5.0/W0RK; \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check" \
+"make check -j$(grep -c ^processor /proc/cpuinfo)" \
 "make install; \
 CleanUp gmp-4.3.2; \
 CleanUp mpfr-2.4.2; \
