@@ -20,7 +20,7 @@ Install libffi-3.0.13 gz
 Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
 Install guile-2.0.14 xz
-Install coreutils-7.6 xz
+Install coreutils-8.32 xz
 Install gperf-3.1 gz
 InstallRoot sed-4.2.2 bz2
 export XFAIL_TESTS=str2m.test
@@ -30,6 +30,9 @@ Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
+export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
+Install bison-3.5.4 xz
+unset CXXFLAGS
 CustomInstall automake-1.15 xz "For Host" "W0RK" \
 "../configure --prefix=/usr" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
@@ -95,9 +98,6 @@ Install libffi-3.3 gz
 Install p11-kit-0.23.18.1 gz
 Install gnutls-3.3.30 xz --enable-shared
 Install wget-1.19.5 gz
-export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
-Install bison-3.5.4 xz
-unset CXXFLAGS
 Install gawk-4.2.1 xz
 Install texinfo-6.8 xz --enable-dependency-tracking
 rm -f /sbin/install-info
