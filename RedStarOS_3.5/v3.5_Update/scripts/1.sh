@@ -37,9 +37,11 @@ Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
 export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 InstallJ1 bison-3.5.4 xz
 unset CXXFLAGS
-export XFAIL_TESTS="t/python-am-path-iftrue.sh t/aclocal-deleted-header-aclocal-amflags.sh"
-Install automake-1.15 xz
+export XFAIL_TESTS="t/python-am-path-iftrue.sh"
+export POSTCFG "echo 'exit 77' > ../t/aclocal-deleted-header-aclocal-amflags.sh;"
+Install automake-1.16.5 xz
 unset XFAIL_TESTS
+ResetInstallerHooks
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared

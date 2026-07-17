@@ -28,6 +28,13 @@ title() {
 set -x
 printf '\033]0;%s\007' "$*" || return 1
 }
+ResetInstallerHooks() {
+export POSTEXT="nop"
+export POSTCFG="nop"
+export POSTMAK="nop"
+export POSTCHK="nop"
+export POSTDPL="nop"
+}
 nop() { return 0; }
 Extract() {
 set -x
@@ -113,14 +120,19 @@ if [[ -n "${Subfolder}" ]]; then
 mkdir "${Subfolder}" || return 1
 cd "${Subfolder}" || return 1
 fi
+eval ${POSTEXT} || return 1
 title "${TitleText} [${TitlePostfixB}]" || return 1
 eval ${ConfigureCommand} || return 1
+eval ${POSTCFG} || return 1
 title "${TitleText} [${TitlePostfixC}]" || return 1
 eval ${MakeCommand} || return 1
+eval ${POSTMAK} || return 1
 title "${TitleText} [${TitlePostfixD}]" || return 1
 eval ${CheckCommand} || return 1
+eval ${POSTCHK} || return 1
 title "${TitleText} [${TitlePostfixE}]" || return 1
 eval ${DeployCommand}  || return 1
+eval ${POSTDPL} || return 1
 CleanUp "${Package}" "${TitleText} [${TitlePostfixF}]" || return 1
 return 0
 }
@@ -838,5 +850,6 @@ reboot
 export PATH=/opt/Cross64/bin:/opt/NewRoot/usr/bin:/opt/NewRoot/usr/sbin:$PATH
 export PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
 export PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1
+ResetInstallerHooks
 trap 'operationerror' ERR
 set +e
