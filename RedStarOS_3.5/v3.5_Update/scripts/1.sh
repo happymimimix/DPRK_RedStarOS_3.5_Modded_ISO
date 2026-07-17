@@ -34,14 +34,12 @@ Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
-Install bison-3.5.4 xz
-CustomInstall automake-1.15 xz "For Host" "W0RK" \
-"../configure --prefix=/usr" \
-"make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"echo 'exit 77' > ../t/python-am-path-iftrue.sh; \
-echo 'exit 77' > ../t/aclocal-deleted-header-aclocal-amflags.sh; \
-make check -j$(grep -c ^processor /proc/cpuinfo)" \
-"make install"
+export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
+InstallJ1 bison-3.5.4 xz
+unset CXXFLAGS
+export XFAIL_TESTS="t/python-am-path-iftrue.sh t/aclocal-deleted-header-aclocal-amflags.sh"
+Install automake-1.15 xz
+unset XFAIL_TESTS
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
