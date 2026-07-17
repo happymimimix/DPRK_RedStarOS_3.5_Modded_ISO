@@ -37,15 +37,25 @@ Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
 export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 InstallJ1 bison-3.5.4 xz
 unset CXXFLAGS
-export XFAIL_TESTS="t/python-am-path-iftrue.sh"
-export POSTCFG="sed -i '/rm -f foo.m4/asleep 2' ../t/aclocal-deleted-header-aclocal-amflags.sh"
+export POSTCFG="sed -i '/rm -f foo.m4/asleep 2' ../t/aclocal-deleted-header-aclocal-amflags.sh; \
+echo 'XFAIL_TESTS += t/python-am-path-iftrue.sh' >> Makefile"
 Install automake-1.16.5 xz
-unset XFAIL_TESTS
 ResetInstallerHooks
 Install gmp-4.3.2 bz2 --enable-cxx --enable-shared
 Install mpfr-2.4.2 bz2 --enable-shared
 Install mpc-0.8.1 gz --enable-shared
 Install isl-0.14 bz2
+Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
+--enable-ld=yes --enable-gold=no --enable-obsolete \
+--enable-threads=posix --enable-checking=release --with-system-zlib \
+--enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
+--enable-shared --enable-host-shared --enable-multiarch --enable-multilib \
+--enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
+--enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
+--enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
+--enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
+--enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
+--enable-lto --enable-tls --enable-nls
 Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
@@ -59,17 +69,6 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls
 Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
---enable-ld=yes --enable-gold=no --enable-obsolete \
---enable-threads=posix --enable-checking=release --with-system-zlib \
---enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
---enable-shared --enable-host-shared --enable-multiarch --enable-multilib \
---enable-libada --enable-libatomic --enable-libbacktrace --enable-libcc1 --enable-libcilkrts --enable-libcpp \
---enable-libdecnumber --enable-libffi --enable-libgcc --enable-libgfortran --enable-libgo --enable-libgomp \
---enable-libiberty --enable-libitm --enable-libjava --enable-libmpx --enable-libobjc --enable-libsanitizer \
---enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
---enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
---enable-lto --enable-tls --enable-nls
-Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
