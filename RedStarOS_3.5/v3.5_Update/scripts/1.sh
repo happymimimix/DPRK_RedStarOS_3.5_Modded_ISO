@@ -38,7 +38,7 @@ export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 InstallJ1 bison-3.5.4 xz
 unset CXXFLAGS
 export XFAIL_TESTS="t/python-am-path-iftrue.sh"
-export POSTCFG "echo 'exit 77' > ../t/aclocal-deleted-header-aclocal-amflags.sh;"
+export POSTCFG="sed -i '/rm -f foo.m4/asleep 2' ../t/aclocal-deleted-header-aclocal-amflags.sh"
 Install automake-1.16.5 xz
 unset XFAIL_TESTS
 ResetInstallerHooks

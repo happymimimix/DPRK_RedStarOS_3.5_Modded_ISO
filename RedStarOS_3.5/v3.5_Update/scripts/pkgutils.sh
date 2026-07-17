@@ -59,6 +59,17 @@ cd /workspace || return 1
 rm -rf "${1}" || return 1
 return 0
 }
+AutoCleanUp() {
+local segments= || return 1
+IFS='/' read -ra segments <<< "${PWD}" || return 1
+local segmentA="${segments[1]}" || return 1
+local segmentB="${segments[2]}" || return 1
+if [[ "${segmentA}" == "workspace" && -n "${segmentB}" ]]; then
+CleanUp "${segmentB}" || return 1
+else
+return 1
+fi
+}
 FullCleanUp() {
 set -x
 title "Cleaning All Workspaces" || return 1
