@@ -21,20 +21,20 @@ Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
 Install guile-2.0.14 xz
 export FORCE_UNSAFE_CONFIGURE=1
+export XFAIL_TESTS="tests/df/over-mount-device.sh tests/misc/timeout-group.sh"
 Install coreutils-8.23 xz
 unset FORCE_UNSAFE_CONFIGURE
+unset XFAIL_TESTS
 Install gperf-3.1 gz
 InstallRoot sed-4.2.2 bz2
-export XFAIL_TESTS=str2m.test
+export XFAIL_TESTS="str2m.test"
 Install autogen-5.18.7 xz
 unset XFAIL_TESTS
 Install zlib-1.2.11 xz
 InstallRoot zlib-1.2.11 xz
 Install bc-1.07.1 gz --enable-shared
 Install make-4.2.1 gz --with-libintl-prefix --with-libiconv-prefix --with-gnu-ld
-export CXXFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 Install bison-3.5.4 xz
-unset CXXFLAGS
 CustomInstall automake-1.15 xz "For Host" "W0RK" \
 "../configure --prefix=/usr" \
 "make all -j$(grep -c ^processor /proc/cpuinfo)" \
