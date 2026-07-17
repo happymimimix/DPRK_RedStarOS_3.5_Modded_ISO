@@ -20,7 +20,7 @@ Install libffi-3.0.13 gz
 Install libatomic_ops-7.6.2 gz
 Install gc-7.6.2 gz
 Install guile-2.0.14 xz
-Install coreutils-8.32 xz
+Install coreutils-8.23 xz
 Install gperf-3.1 gz
 InstallRoot sed-4.2.2 bz2
 export XFAIL_TESTS=str2m.test
