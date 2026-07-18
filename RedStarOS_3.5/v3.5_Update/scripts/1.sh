@@ -56,7 +56,7 @@ Install binutils-2.34 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls
-Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
+InstallNoCheck gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
@@ -68,7 +68,9 @@ Install gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls
-Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
+InstallNoCheck ncurses-6.0 gz --with-shared --with-ada --enable-ext-colors --enable-ext-mouse
+export LDFLAGS="-Wl,--copy-dt-needed-entries"
+Install gdb-8.2.1 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
@@ -79,7 +81,7 @@ Install gdb-7.12 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-libquadmath --enable-libssp --enable-libstdcxx --enable-libvtv --enable-libquadmath-support \
 --enable-libgcj --enable-static-libjava=unicows --enable-objc-gc --enable-vtable-verify \
 --enable-lto --enable-tls --enable-nls
-Install ncurses-6.0 gz --with-ada --enable-ext-colors --enable-ext-mouse
+unset LDFLAGS
 Install gmp-6.2.1 bz2 --enable-cxx --enable-shared
 Install mpfr-4.1.0 bz2 --enable-shared
 Install mpc-1.2.1 gz --enable-shared
