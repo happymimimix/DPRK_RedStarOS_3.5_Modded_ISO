@@ -70,7 +70,7 @@ InstallNoCheck gcc-6.5.0 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-lto --enable-tls --enable-nls
 InstallNoCheck ncurses-6.0 gz --with-shared --with-ada --enable-ext-colors --enable-ext-mouse
 export LDFLAGS="-Wl,--copy-dt-needed-entries"
-Install gdb-8.2.1 xz --mandir=/usr/share/man --infodir=/usr/share/info \
+InstallNoCheck gdb-8.2.1 xz --mandir=/usr/share/man --infodir=/usr/share/info \
 --enable-ld=yes --enable-gold=no --enable-obsolete \
 --enable-threads=posix --enable-checking=release --with-system-zlib \
 --enable-__cxa_atexit --disable-libunwind-exceptions --with-tune=generic \
@@ -90,10 +90,15 @@ Install nettle-3.4.1 gz --enable-shared --enable-threads
 Install libtasn1-4.10 gz
 Install libiconv-1.16 gz
 Install cpio-2.13 gz
+CustomInstall perl-5.32.1 gz "For Host" "" \
+"./Configure -des -Dprefix=/usr -Dusethreads" \
+"make all -j$(ccpu)" \
+"make test -j$(ccpu)" \
+"make install"
 CustomInstall openssl-1.1.1d gz "For Host" "" \
 "./config --prefix=/usr --openssldir=/usr/ssl" \
-"make all -j$(grep -c ^processor /proc/cpuinfo)" \
-"make check -j$(grep -c ^processor /proc/cpuinfo)" \
+"make all -j$(ccpu)" \
+"make test -j$(ccpu)" \
 "make install"
 Install expat-2.2.10 xz
 Install unbound-1.12.0 gz
@@ -125,8 +130,6 @@ rm -f '/opt/NewRoot/usr'
 ln -sdf '/opt/NewRoot' '/opt/NewRoot/usr'
 rm -f '/opt/NewRoot/opt'
 ln -sdf '/opt' '/opt/NewRoot/opt'
-rm -f '/opt/NewRoot/lib'
-ln -sdf '/opt/NewRoot/lib64' '/opt/NewRoot/lib'
 title Installing Kernel 3.19.8 For Cross-x86_64 \[Extracting\]
 cd /usr/src/kernels
 tar xvf "/root/Desktop/v3.5 Update Combo/packages/linux-3.19.8.tar.xz"

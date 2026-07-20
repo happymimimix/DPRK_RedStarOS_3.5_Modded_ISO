@@ -1,4 +1,5 @@
 #!/bin/bash
+alias ccpu="ccpu"
 MakeShortcut() {
 set -x
 rm -f '/bin/pkgtool' || return 1
@@ -28,6 +29,7 @@ title() {
 set -x
 printf '\033]0;%s\007' "$*" || return 1
 }
+nop() { return 0; }
 ResetInstallerHooks() {
 export POSTEXT="nop"
 export POSTCFG="nop"
@@ -35,7 +37,6 @@ export POSTMAK="nop"
 export POSTCHK="nop"
 export POSTDPL="nop"
 }
-nop() { return 0; }
 Extract() {
 set -x
 if [[ -n "${3}" ]]; then
@@ -198,7 +199,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=/usr" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Host" "--prefix=/usr" "${@}" || return 1
 return 0
 }
 InstallJ1() {
@@ -214,7 +215,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Host" "--prefix=" "${@}" || return 1
 return 0
 }
 InstallRootJ1() {
@@ -246,7 +247,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 return 0
 }
 InstallCross64J1() {
@@ -262,7 +263,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 return 0
 }
 InstallCross64RootJ1() {
@@ -279,7 +280,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Cross64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Cross64EnvCleanUp || return 1
 return 0
 }
@@ -299,7 +300,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Cross64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Cross64EnvCleanUp || return 1
 return 0
 }
@@ -404,7 +405,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -424,7 +425,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix= --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Host-x64" "--prefix= --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -444,7 +445,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -464,7 +465,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngine "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngine "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64-Native" "--prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -483,7 +484,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=/usr" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Host" "--prefix=/usr" "${@}" || return 1
 return 0
 }
 InstallJ1NoCheck() {
@@ -499,7 +500,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host" "--prefix=" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Host" "--prefix=" "${@}" || return 1
 return 0
 }
 InstallRootJ1NoCheck() {
@@ -515,7 +516,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 return 0
 }
 InstallCross64J1NoCheck() {
@@ -531,7 +532,7 @@ set -x
 local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--target=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 return 0
 }
 InstallCross64RootJ1NoCheck() {
@@ -548,7 +549,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Cross64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Cross64EnvCleanUp || return 1
 return 0
 }
@@ -568,7 +569,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Cross64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64" "--host=x86_64-pc-linux-gnu --prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Cross64EnvCleanUp || return 1
 return 0
 }
@@ -588,7 +589,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Host-x64" "--prefix=/usr --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -608,7 +609,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Host-x64" "--prefix= --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Host-x64" "--prefix= --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -628,7 +629,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64-Native" "--prefix=/opt/Cross64 --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -648,7 +649,7 @@ local Package="${1}" || return 1
 local Format="${2}" || return 1
 shift 2 || return 1
 Native64EnvSetup || return 1
-InstallEngineNoCheck "${Package}" "${Format}" "$(grep -c ^processor /proc/cpuinfo)" "For Cross-x86_64-Native" "--prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
+InstallEngineNoCheck "${Package}" "${Format}" "$(ccpu)" "For Cross-x86_64-Native" "--prefix=/opt/NewRoot --with-sysroot=/opt/NewRoot" "${@}" || return 1
 Native64EnvCleanUp || return 1
 return 0
 }
@@ -803,7 +804,7 @@ local Package="linux-${1}" || return 1
 local Format="${2}" || return 1
 local TitleText="Installing Kernel ${Package}" || return 1
 local ConfigureCommand="make allyesconfig" || return 1
-local MakeCommand="make -j$(grep -c ^processor /proc/cpuinfo)" || return 1
+local MakeCommand="make -j$(ccpu)" || return 1
 local DeployCommandA="make modules_install" || return 1
 local DeployCommandB="make install" || return 1
 local DeployCommandC="make headers_install INSTALL_HDR_PATH=/usr" || return 1
